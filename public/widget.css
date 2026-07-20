@@ -1,0 +1,34 @@
+.z3-card{
+    text-decoration:none;
+    color:#222;
+}
+
+.z3-btn{
+
+    width:100%;
+
+    margin-top:15px;
+
+    border:none;
+
+    background:#4F46E5;
+
+    color:#fff;
+
+    padding:12px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    font-weight:bold;
+
+}
+
+.z3-btn:hover{
+
+    background:#312E81;
+
+}
