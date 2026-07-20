@@ -1,49 +1,79 @@
-/* ===========================
-   Z3 Widget Imóveis
-=========================== */
+/* =====================================================
+   Z3 WIDGET IMÓVEIS v3
+   PARTE 1
+===================================================== */
+
+:root{
+
+    --z3-primary:#0B5ED7;
+    --z3-primary-hover:#0849a8;
+
+    --z3-success:#16A34A;
+
+    --z3-dark:#1E293B;
+    --z3-text:#475569;
+    --z3-light:#F8FAFC;
+
+    --z3-border:#E5E7EB;
+
+    --z3-shadow:0 12px 40px rgba(15,23,42,.10);
+
+    --z3-radius:18px;
+
+}
 
 #z3-imoveis{
 
     width:100%;
+    max-width:1450px;
+
+    margin:70px auto;
+
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
-    gap:30px;
 
-    margin:50px auto;
+    grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
 
-    padding:0;
+    gap:32px;
+
+    padding:0 20px;
 
     box-sizing:border-box;
 
 }
 
-#z3-imoveis *{
+#z3-imoveis *,
+#z3-imoveis *:before,
+#z3-imoveis *:after{
 
     box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
 
 }
-
-/* CARD */
 
 .z3-card{
 
     display:flex;
+
     flex-direction:column;
 
     overflow:hidden;
 
     background:#FFF;
 
-    border-radius:18px;
+    border-radius:var(--z3-radius);
 
     text-decoration:none;
 
-    color:#222;
+    color:inherit;
 
-    box-shadow:0 8px 30px rgba(0,0,0,.08);
+    box-shadow:var(--z3-shadow);
 
-    transition:.35s;
+    border:1px solid rgba(15,23,42,.05);
+
+    transition:.35s ease;
+
+    position:relative;
+
+    height:100%;
 
 }
 
@@ -51,11 +81,9 @@
 
     transform:translateY(-8px);
 
-    box-shadow:0 18px 40px rgba(0,0,0,.15);
+    box-shadow:0 18px 45px rgba(0,0,0,.16);
 
 }
-
-/* FOTO */
 
 .z3-image{
 
@@ -63,9 +91,11 @@
 
     width:100%;
 
-    aspect-ratio:16/10;
+    aspect-ratio:16/9;
 
     overflow:hidden;
+
+    background:#EEE;
 
 }
 
@@ -77,19 +107,33 @@
 
     object-fit:cover;
 
-    transition:.4s;
-
     display:block;
 
-}
-
-.z3-card:hover img{
-
-    transform:scale(1.05);
+    transition:transform .5s ease;
 
 }
 
-/* BADGE */
+.z3-card:hover .z3-image img{
+
+    transform:scale(1.08);
+
+}
+
+.z3-image:after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,.35),
+        rgba(0,0,0,0)
+    );
+
+}
 
 .z3-badge{
 
@@ -99,25 +143,27 @@
 
     left:18px;
 
-    padding:8px 16px;
+    z-index:2;
 
-    background:#6f2cff;
+    padding:8px 18px;
+
+    border-radius:100px;
+
+    background:var(--z3-primary);
 
     color:#FFF;
 
-    border-radius:40px;
-
     font-size:13px;
 
-    font-weight:bold;
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+    text-transform:uppercase;
 
 }
 
-/* INFORMAÇÕES */
-
 .z3-info{
-
-    padding:24px;
 
     display:flex;
 
@@ -125,49 +171,47 @@
 
     flex:1;
 
+    padding:26px;
+
 }
 
 .z3-info h3{
 
     margin:0;
 
-    font-size:23px;
+    color:var(--z3-dark);
+
+    font-size:24px;
+
+    font-weight:700;
 
     line-height:1.35;
 
-    min-height:64px;
-
-    color:#222;
+    min-height:68px;
 
 }
-
-/* ENDEREÇO */
 
 .z3-local{
 
-    margin:14px 0;
+    margin:16px 0 22px;
 
-    color:#777;
+    color:var(--z3-text);
 
     font-size:15px;
+
+    line-height:1.5;
 
 }
 
-/* ÍCONES */
-
 .z3-icons{
 
-    display:flex;
+    display:grid;
 
-    justify-content:space-between;
+    grid-template-columns:repeat(4,1fr);
 
-    align-items:center;
+    gap:10px;
 
-    margin-bottom:22px;
-
-    color:#555;
-
-    font-size:15px;
+    margin-bottom:24px;
 
 }
 
@@ -175,111 +219,339 @@
 
     display:flex;
 
+    flex-direction:column;
+
+    justify-content:center;
+
     align-items:center;
 
-    gap:6px;
+    gap:8px;
+
+    padding:14px 8px;
+
+    border-radius:12px;
+
+    background:#F8FAFC;
+
+    border:1px solid var(--z3-border);
+
+    font-size:13px;
+
+    color:#64748B;
+
+    transition:.25s;
 
 }
 
-/* VALOR */
+.z3-card:hover .z3-icons span{
+
+    background:#FFF;
+
+    transform:translateY(-2px);
+
+}
 
 .z3-info strong{
 
-    font-size:30px;
-
-    color:#111;
-
     margin-top:auto;
 
-    margin-bottom:22px;
+    display:block;
+
+    color:var(--z3-dark);
+
+    font-size:34px;
+
+    font-weight:800;
+
+    line-height:1;
+
+    margin-bottom:24px;
 
 }
+/* =====================================================
+   Z3 WIDGET IMÓVEIS v3
+   PARTE 2
+===================================================== */
 
-/* BOTÃO */
+/* ===========================
+   BOTÃO
+=========================== */
 
 .z3-btn{
 
     width:100%;
 
+    height:54px;
+
     border:none;
 
-    padding:16px;
+    border-radius:12px;
 
-    border-radius:10px;
-
-    background:#6f2cff;
+    background:linear-gradient(135deg,var(--z3-primary),#1d72f3);
 
     color:#FFF;
 
     font-size:16px;
 
-    font-weight:bold;
+    font-weight:700;
 
     cursor:pointer;
+
+    transition:.30s;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    letter-spacing:.3px;
+
+}
+
+.z3-btn:after{
+
+    content:"→";
 
     transition:.3s;
 
 }
 
-.z3-btn:hover{
+.z3-card:hover .z3-btn{
 
-    background:#5320c8;
+    background:linear-gradient(135deg,var(--z3-primary-hover),var(--z3-primary));
 
 }
 
-/* LOADING */
+.z3-card:hover .z3-btn:after{
+
+    transform:translateX(6px);
+
+}
+
+/* ===========================
+   LOADING
+=========================== */
 
 .z3-loading{
 
-    padding:60px;
+    width:100%;
+
+    padding:80px;
+
+    text-align:center;
+
+    color:#64748B;
+
+    font-size:18px;
+
+    background:#FFF;
+
+    border-radius:20px;
+
+    border:1px solid var(--z3-border);
+
+    box-shadow:var(--z3-shadow);
+
+}
+
+/* ===========================
+   EMPTY
+=========================== */
+
+.z3-empty{
+
+    width:100%;
+
+    padding:80px 40px;
+
+    background:#FFF;
+
+    border-radius:20px;
+
+    border:1px solid var(--z3-border);
+
+    box-shadow:var(--z3-shadow);
+
+    text-align:center;
+
+    color:#64748B;
+
+    font-size:18px;
+
+}
+
+/* ===========================
+   ERROR
+=========================== */
+
+.z3-error{
+
+    width:100%;
+
+    padding:80px 40px;
+
+    border-radius:20px;
+
+    background:#FFF5F5;
+
+    border:1px solid #FECACA;
+
+    color:#DC2626;
 
     text-align:center;
 
     font-size:18px;
 
-    color:#777;
+    box-shadow:var(--z3-shadow);
 
 }
 
-/* SEM RESULTADOS */
+/* ===========================
+   SCROLLBAR
+=========================== */
 
-.z3-empty{
+#z3-imoveis::-webkit-scrollbar{
 
-    padding:60px;
-
-    border:1px solid #EEE;
-
-    border-radius:14px;
-
-    text-align:center;
-
-    color:#666;
+    height:8px;
 
 }
 
-/* ERRO */
+#z3-imoveis::-webkit-scrollbar-thumb{
 
-.z3-error{
+    background:#D1D5DB;
 
-    padding:60px;
-
-    border:1px solid #ffb5b5;
-
-    background:#fff2f2;
-
-    color:#d10000;
-
-    border-radius:14px;
-
-    text-align:center;
+    border-radius:50px;
 
 }
 
-/* RESPONSIVO */
+/* ===========================
+   ANIMAÇÃO
+=========================== */
 
-@media(max-width:1100px){
+.z3-card{
+
+    opacity:0;
+
+    animation:z3Fade .5s ease forwards;
+
+}
+
+.z3-card:nth-child(2){
+
+    animation-delay:.05s;
+
+}
+
+.z3-card:nth-child(3){
+
+    animation-delay:.10s;
+
+}
+
+.z3-card:nth-child(4){
+
+    animation-delay:.15s;
+
+}
+
+.z3-card:nth-child(5){
+
+    animation-delay:.20s;
+
+}
+
+.z3-card:nth-child(6){
+
+    animation-delay:.25s;
+
+}
+
+@keyframes z3Fade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(30px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ===========================
+   RESPONSIVO
+=========================== */
+
+@media(max-width:1200px){
 
     #z3-imoveis{
+
+        grid-template-columns:repeat(2,minmax(320px,1fr));
+
+    }
+
+}
+
+@media(max-width:900px){
+
+    #z3-imoveis{
+
+        gap:24px;
+
+        padding:0 15px;
+
+    }
+
+    .z3-info{
+
+        padding:22px;
+
+    }
+
+    .z3-info h3{
+
+        font-size:22px;
+
+        min-height:auto;
+
+    }
+
+    .z3-info strong{
+
+        font-size:30px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    #z3-imoveis{
+
+        grid-template-columns:1fr;
+
+        margin:40px auto;
+
+    }
+
+    .z3-image{
+
+        aspect-ratio:16/10;
+
+    }
+
+    .z3-icons{
 
         grid-template-columns:repeat(2,1fr);
 
@@ -287,11 +559,11 @@
 
 }
 
-@media(max-width:700px){
+@media(max-width:480px){
 
     #z3-imoveis{
 
-        grid-template-columns:1fr;
+        padding:0 10px;
 
     }
 
@@ -307,10 +579,92 @@
 
     }
 
-    .z3-info strong{
+    .z3-local{
 
-        font-size:24px;
+        font-size:14px;
 
     }
+
+    .z3-icons span{
+
+        font-size:12px;
+
+        padding:12px 8px;
+
+    }
+
+    .z3-info strong{
+
+        font-size:28px;
+
+    }
+
+    .z3-btn{
+
+        height:50px;
+
+        font-size:15px;
+
+    }
+
+}
+
+/* ===========================
+   DETALHES PREMIUM
+=========================== */
+
+.z3-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:18px;
+
+    border:1px solid rgba(255,255,255,.35);
+
+    pointer-events:none;
+
+}
+
+.z3-card:hover{
+
+    border-color:rgba(11,94,215,.15);
+
+}
+
+.z3-card:hover .z3-info h3{
+
+    color:var(--z3-primary);
+
+}
+
+.z3-card:hover .z3-info strong{
+
+    color:var(--z3-primary);
+
+}
+
+.z3-card:hover .z3-badge{
+
+    transform:scale(1.05);
+
+}
+
+.z3-badge{
+
+    transition:.3s;
+
+}
+
+.z3-card,
+.z3-btn,
+.z3-icons span,
+.z3-image img,
+.z3-badge{
+
+    will-change:transform;
 
 }
