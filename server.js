@@ -17,7 +17,7 @@ app.use("/api/imoveis", require("./routes/imoveis"));
 
 // Página inicial
 app.get("/", (req, res) => {
-    res.send("API ONLINE 🚀");
+    res.sendFile(path.join(__dirname, "public", "pages", "imoveis.html"));
 });
 
 const PORT = process.env.PORT || 3000;
