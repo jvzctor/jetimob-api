@@ -15,80 +15,98 @@
 
 <body>
 
-    <main class="container">
+<div class="container">
+
+    <header>
 
         <h1>Todos os Imóveis</h1>
 
-        <p class="subtitulo">
+        <p>
             Encontre o imóvel ideal para você.
         </p>
 
-        <!-- PESQUISA -->
+    </header>
 
-        <div class="pesquisa">
+    <section class="busca">
 
-            <input
-                type="text"
-                id="pesquisa"
-                placeholder="Pesquisar por código, cidade, bairro ou título...">
+        <input
+            id="pesquisa"
+            type="text"
+            placeholder="Pesquisar por código, bairro, cidade ou imóvel...">
 
-        </div>
+    </section>
 
-        <!-- FILTROS -->
+    <section class="filtros">
 
-        <div class="filtros">
+        <select id="tipo">
 
-            <select id="tipo">
+            <option value="">Todos os tipos</option>
 
-                <option value="">Todos os tipos</option>
+        </select>
 
-            </select>
+        <select id="dormitorios">
 
-            <select id="dormitorios">
+            <option value="">Dormitórios</option>
 
-                <option value="">Dormitórios</option>
+            <option value="1">1+</option>
 
-                <option value="1">1+</option>
+            <option value="2">2+</option>
 
-                <option value="2">2+</option>
+            <option value="3">3+</option>
 
-                <option value="3">3+</option>
+            <option value="4">4+</option>
 
-                <option value="4">4+</option>
+        </select>
 
-            </select>
+        <select id="ordenacao">
 
-            <select id="ordenacao">
+            <option value="recentes">
 
-                <option value="recentes">Mais recentes</option>
+                Mais recentes
 
-                <option value="menor">Menor preço</option>
+            </option>
 
-                <option value="maior">Maior preço</option>
+            <option value="menor">
 
-                <option value="area">Maior área</option>
+                Menor preço
 
-            </select>
+            </option>
 
-        </div>
+            <option value="maior">
 
-        <!-- CONTADOR -->
+                Maior preço
 
-        <p id="contador">
+            </option>
+
+            <option value="area">
+
+                Maior área
+
+            </option>
+
+        </select>
+
+    </section>
+
+    <div class="topo-lista">
+
+        <span id="contador">
 
             Carregando imóveis...
 
-        </p>
+        </span>
 
-        <!-- CARDS -->
+    </div>
 
-        <div id="lista-imoveis">
+    <section
+        id="lista-imoveis"
+        class="grid">
 
-        </div>
+    </section>
 
-    </main>
+</div>
 
-    <script src="../js/imoveis.js"></script>
+<script src="../js/imoveis.js"></script>
 
 </body>
 
