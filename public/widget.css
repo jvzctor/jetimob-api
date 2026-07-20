@@ -1,45 +1,316 @@
-.z3-card{
-    text-decoration:none;
-    color:#222;
+/* ===========================
+   Z3 Widget Imóveis
+=========================== */
+
+#z3-imoveis{
+
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+    gap:30px;
+
+    margin:50px auto;
+
+    padding:0;
+
+    box-sizing:border-box;
+
 }
 
-.z3-btn{
+#z3-imoveis *{
+
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+
+}
+
+/* CARD */
+
+.z3-card{
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
+
+    background:#FFF;
+
+    border-radius:18px;
+
+    text-decoration:none;
+
+    color:#222;
+
+    box-shadow:0 8px 30px rgba(0,0,0,.08);
+
+    transition:.35s;
+
+}
+
+.z3-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.15);
+
+}
+
+/* FOTO */
+
+.z3-image{
+
+    position:relative;
 
     width:100%;
 
-    margin-top:15px;
+    aspect-ratio:16/10;
 
-    border:none;
+    overflow:hidden;
 
-    background:#4F46E5;
+}
 
-    color:#fff;
+.z3-image img{
 
-    padding:12px;
+    width:100%;
 
-    border-radius:8px;
+    height:100%;
 
-    cursor:pointer;
+    object-fit:cover;
 
-    transition:.3s;
+    transition:.4s;
+
+    display:block;
+
+}
+
+.z3-card:hover img{
+
+    transform:scale(1.05);
+
+}
+
+/* BADGE */
+
+.z3-badge{
+
+    position:absolute;
+
+    top:18px;
+
+    left:18px;
+
+    padding:8px 16px;
+
+    background:#6f2cff;
+
+    color:#FFF;
+
+    border-radius:40px;
+
+    font-size:13px;
 
     font-weight:bold;
 
 }
 
-.z3-btn:hover{
+/* INFORMAÇÕES */
 
-    background:#312E81;
+.z3-info{
+
+    padding:24px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    flex:1;
 
 }
-.z3-empty,
-.z3-error{
-    width:100%;
-    padding:40px;
-    text-align:center;
-    border:1px solid #e5e5e5;
-    border-radius:10px;
-    background:#fafafa;
+
+.z3-info h3{
+
+    margin:0;
+
+    font-size:23px;
+
+    line-height:1.35;
+
+    min-height:64px;
+
+    color:#222;
+
+}
+
+/* ENDEREÇO */
+
+.z3-local{
+
+    margin:14px 0;
+
+    color:#777;
+
+    font-size:15px;
+
+}
+
+/* ÍCONES */
+
+.z3-icons{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:22px;
+
     color:#555;
+
+    font-size:15px;
+
+}
+
+.z3-icons span{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+}
+
+/* VALOR */
+
+.z3-info strong{
+
+    font-size:30px;
+
+    color:#111;
+
+    margin-top:auto;
+
+    margin-bottom:22px;
+
+}
+
+/* BOTÃO */
+
+.z3-btn{
+
+    width:100%;
+
+    border:none;
+
+    padding:16px;
+
+    border-radius:10px;
+
+    background:#6f2cff;
+
+    color:#FFF;
+
     font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.z3-btn:hover{
+
+    background:#5320c8;
+
+}
+
+/* LOADING */
+
+.z3-loading{
+
+    padding:60px;
+
+    text-align:center;
+
+    font-size:18px;
+
+    color:#777;
+
+}
+
+/* SEM RESULTADOS */
+
+.z3-empty{
+
+    padding:60px;
+
+    border:1px solid #EEE;
+
+    border-radius:14px;
+
+    text-align:center;
+
+    color:#666;
+
+}
+
+/* ERRO */
+
+.z3-error{
+
+    padding:60px;
+
+    border:1px solid #ffb5b5;
+
+    background:#fff2f2;
+
+    color:#d10000;
+
+    border-radius:14px;
+
+    text-align:center;
+
+}
+
+/* RESPONSIVO */
+
+@media(max-width:1100px){
+
+    #z3-imoveis{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:700px){
+
+    #z3-imoveis{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .z3-info{
+
+        padding:18px;
+
+    }
+
+    .z3-info h3{
+
+        font-size:20px;
+
+    }
+
+    .z3-info strong{
+
+        font-size:24px;
+
+    }
+
 }
