@@ -7,7 +7,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Todos os Imóveis</title>
+    <title>Imóveis | Imobiliária</title>
 
     <link rel="stylesheet" href="../css/imoveis.css">
 
@@ -15,98 +15,191 @@
 
 <body>
 
-<div class="container">
+    <!-- ===================================== -->
+    <!-- HERO -->
+    <!-- ===================================== -->
 
-    <header>
+    <section class="hero-imoveis">
 
-        <h1>Todos os Imóveis</h1>
+        <div class="hero-container">
 
-        <p>
-            Encontre o imóvel ideal para você.
-        </p>
+            <h1>Encontre o imóvel ideal</h1>
 
-    </header>
+            <p>
 
-    <section class="busca">
+                Casas, apartamentos, terrenos e salas comerciais em um só lugar.
 
-        <input
-            id="pesquisa"
-            type="text"
-            placeholder="Pesquisar por código, bairro, cidade ou imóvel...">
+            </p>
 
-    </section>
-
-    <section class="filtros">
-
-        <select id="tipo">
-
-            <option value="">Todos os tipos</option>
-
-        </select>
-
-        <select id="dormitorios">
-
-            <option value="">Dormitórios</option>
-
-            <option value="1">1+</option>
-
-            <option value="2">2+</option>
-
-            <option value="3">3+</option>
-
-            <option value="4">4+</option>
-
-        </select>
-
-        <select id="ordenacao">
-
-            <option value="recentes">
-
-                Mais recentes
-
-            </option>
-
-            <option value="menor">
-
-                Menor preço
-
-            </option>
-
-            <option value="maior">
-
-                Maior preço
-
-            </option>
-
-            <option value="area">
-
-                Maior área
-
-            </option>
-
-        </select>
+        </div>
 
     </section>
 
-    <div class="topo-lista">
 
-        <span id="contador">
+    <!-- ===================================== -->
+    <!-- CONTAINER -->
+    <!-- ===================================== -->
+
+    <main class="container-imoveis">
+
+
+        <!-- ===================================== -->
+        <!-- FILTROS -->
+        <!-- ===================================== -->
+
+        <section class="filtros">
+
+
+            <div class="campo">
+
+                <input
+
+                    type="text"
+
+                    id="pesquisa"
+
+                    placeholder="Pesquisar por código, bairro, cidade ou imóvel">
+
+            </div>
+
+
+            <div class="campo">
+
+                <select id="tipo">
+
+                    <option value="">Todos os tipos</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="campo">
+
+                <select id="cidade">
+
+                    <option value="">Todas as cidades</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="campo">
+
+                <select id="dormitorios">
+
+                    <option value="">Dormitórios</option>
+
+                    <option value="1">1+</option>
+
+                    <option value="2">2+</option>
+
+                    <option value="3">3+</option>
+
+                    <option value="4">4+</option>
+
+                    <option value="5">5+</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="campo">
+
+                <select id="ordenacao">
+
+                    <option value="">Ordenar</option>
+
+                    <option value="menor">Menor preço</option>
+
+                    <option value="maior">Maior preço</option>
+
+                    <option value="area">Maior área</option>
+
+                    <option value="recentes">Mais recentes</option>
+
+                </select>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================== -->
+        <!-- CONTADOR -->
+        <!-- ===================================== -->
+
+        <div id="contador" class="contador">
 
             Carregando imóveis...
 
-        </span>
+        </div>
+
+
+        <!-- ===================================== -->
+        <!-- GRID -->
+        <!-- ===================================== -->
+
+        <section
+
+            id="lista-imoveis"
+
+            class="grid-imoveis">
+
+        </section>
+
+    </main>
+        <!-- ===================================== -->
+    <!-- RODAPÉ -->
+    <!-- ===================================== -->
+
+    <footer class="rodape-imoveis">
+
+        <div class="rodape-container">
+
+            <div class="rodape-info">
+
+                <h3>Imobiliária</h3>
+
+                <p>
+                    Encontre o imóvel ideal para morar ou investir.
+                </p>
+
+            </div>
+
+            <div class="rodape-contato">
+
+                <p><strong>WhatsApp:</strong> (54) 99701-0512</p>
+
+                <p><strong>E-mail:</strong> contato@imobiliaria.com.br</p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- ===================================== -->
+    <!-- LOADING -->
+    <!-- ===================================== -->
+
+    <div id="loading" class="loading" style="display:none;">
+
+        <div class="spinner"></div>
 
     </div>
 
-    <section
-        id="lista-imoveis"
-        class="grid">
 
-    </section>
 
-</div>
+    <!-- ===================================== -->
+    <!-- JAVASCRIPT -->
+    <!-- ===================================== -->
 
-<script src="../js/imoveis.js"></script>
+    <script src="../js/imoveis.js"></script>
 
 </body>
 

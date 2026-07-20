@@ -1,265 +1,882 @@
+/* ==========================================================
+   PORTAL IMOBILIÁRIO
+   Z3 COMMERCE
+========================================================== */
+
+
+/* ==========================================================
+   RESET
+========================================================== */
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
+html{
+
+    scroll-behavior:smooth;
+
+}
+
 body{
 
-    background:#f5f5f5;
+    font-family:
+    Inter,
+    Arial,
+    Helvetica,
+    sans-serif;
 
-    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f6f8;
 
-    color:#333;
+    color:#222;
 
-}
-
-.container{
-
-    width:95%;
-
-    max-width:1450px;
-
-    margin:40px auto;
+    line-height:1.5;
 
 }
 
-header{
 
-    margin-bottom:30px;
+/* ==========================================================
+   VARIÁVEIS
+========================================================== */
 
-}
+:root{
 
-header h1{
+    --dourado:#b08d57;
 
-    font-size:38px;
+    --dourado-hover:#977447;
 
-    margin-bottom:10px;
+    --cinza:#666;
 
-}
+    --claro:#f5f6f8;
 
-header p{
+    --branco:#fff;
 
-    color:#777;
+    --borda:#ececec;
 
-}
+    --shadow:
 
-.busca{
-
-    margin-bottom:25px;
-
-}
-
-.busca input{
-
-    width:100%;
-
-    height:55px;
-
-    padding:0 20px;
-
-    border:1px solid #ddd;
-
-    border-radius:10px;
-
-    font-size:17px;
-
-    outline:none;
+    0 10px 30px rgba(0,0,0,.08);
 
 }
 
-.busca input:focus{
 
-    border-color:#b01b24;
 
-}
+/* ==========================================================
+   CONTAINER
+========================================================== */
 
-.filtros{
+.container-imoveis{
 
-    display:flex;
+    width:min(1400px,95%);
 
-    gap:15px;
+    margin:auto;
 
-    margin-bottom:30px;
-
-    flex-wrap:wrap;
+    padding:40px 0 80px;
 
 }
 
-.filtros select{
 
-    min-width:220px;
 
-    height:48px;
+/* ==========================================================
+   HERO
+========================================================== */
 
-    border:1px solid #ddd;
+.hero-imoveis{
 
-    border-radius:8px;
+    background:
 
-    padding:0 15px;
+    linear-gradient(
 
-    background:#fff;
+        rgba(0,0,0,.55),
 
-    cursor:pointer;
+        rgba(0,0,0,.55)
 
-}
+    ),
 
-.topo-lista{
+    url("https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1800");
 
-    margin-bottom:25px;
+    background-size:cover;
 
-    font-weight:bold;
+    background-position:center;
 
-    color:#555;
+    padding:110px 20px;
 
-}
+    text-align:center;
 
-.grid{
-
-    display:grid;
-
-    grid-template-columns:repeat(auto-fill,minmax(360px,1fr));
-
-    gap:25px;
+    color:white;
 
 }
 
-.card{
+.hero-container{
 
-    background:#fff;
+    max-width:900px;
 
-    border-radius:14px;
-
-    overflow:hidden;
-
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
-
-    transition:.25s;
+    margin:auto;
 
 }
 
-.card:hover{
+.hero-imoveis h1{
 
-    transform:translateY(-5px);
+    font-size:48px;
 
-}
-
-.card img{
-
-    width:100%;
-
-    height:250px;
-
-    object-fit:cover;
-
-}
-
-.card-body{
-
-    padding:20px;
-
-}
-
-.card h2{
-
-    font-size:22px;
-
-    margin-bottom:10px;
-
-}
-
-.local{
-
-    color:#777;
-
-    margin-bottom:15px;
-
-}
-
-.info{
-
-    display:flex;
-
-    gap:18px;
-
-    flex-wrap:wrap;
-
-    margin-bottom:18px;
-
-}
-
-.info span{
-
-    font-size:14px;
-
-    color:#555;
-
-}
-
-.preco{
-
-    font-size:30px;
-
-    font-weight:bold;
-
-    color:#b01b24;
+    font-weight:700;
 
     margin-bottom:20px;
 
 }
 
-.botao{
+.hero-imoveis p{
 
-    display:block;
+    font-size:20px;
+
+    opacity:.95;
+
+}
+/* ==========================================================
+   FILTROS
+========================================================== */
+
+.filtros{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    margin-top:-60px;
+
+    box-shadow:var(--shadow);
+
+    display:grid;
+
+    grid-template-columns:
+
+    2fr
+    1fr
+    1fr
+    1fr
+    1fr;
+
+    gap:15px;
+
+    position:relative;
+
+    z-index:10;
+
+}
+
+.campo{
 
     width:100%;
 
-    text-align:center;
+}
 
-    background:#b01b24;
+.campo input,
+
+.campo select{
+
+    width:100%;
+
+    height:54px;
+
+    border:1px solid var(--borda);
+
+    border-radius:12px;
+
+    padding:0 18px;
+
+    font-size:15px;
+
+    background:white;
+
+    transition:.25s;
+
+}
+
+.campo input:focus,
+
+.campo select:focus{
+
+    outline:none;
+
+    border-color:var(--dourado);
+
+    box-shadow:
+
+    0 0 0 4px
+
+    rgba(176,141,87,.15);
+
+}
+/* ==========================================================
+   CONTADOR
+========================================================== */
+
+.contador{
+
+    margin:35px 0;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    color:#333;
+
+}
+/* ==========================================================
+   GRID
+========================================================== */
+
+.grid-imoveis{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(
+
+        auto-fill,
+
+        minmax(
+
+            380px,
+
+            1fr
+
+        )
+
+    );
+
+    gap:28px;
+
+}
+/* ==========================================================
+   CARD DO IMÓVEL
+========================================================== */
+
+.card-imovel{
+
+    background:var(--branco);
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow);
+
+    transition:.35s;
+
+    display:flex;
+
+    flex-direction:column;
+
+    border:1px solid #ececec;
+
+}
+
+.card-imovel:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:
+
+    0 18px 40px rgba(0,0,0,.15);
+
+}
+
+
+
+/* ==========================================================
+   IMAGEM
+========================================================== */
+
+.imagem{
+
+    position:relative;
+
+    overflow:hidden;
+
+    height:280px;
+
+    background:#eee;
+
+}
+
+.imagem img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    transition:transform .45s ease;
+
+}
+
+.card-imovel:hover img{
+
+    transform:scale(1.08);
+
+}
+
+
+
+/* ==========================================================
+   CONTEÚDO
+========================================================== */
+
+.conteudo{
+
+    padding:24px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    flex:1;
+
+}
+
+.conteudo h3{
+
+    font-size:23px;
+
+    color:#222;
+
+    margin-bottom:10px;
+
+    line-height:1.3;
+
+}
+
+
+
+/* ==========================================================
+   ENDEREÇO
+========================================================== */
+
+.endereco{
+
+    color:#777;
+
+    font-size:15px;
+
+    margin-bottom:22px;
+
+}
+
+
+
+/* ==========================================================
+   INFORMAÇÕES
+========================================================== */
+
+.informacoes{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(2,1fr);
+
+    gap:12px;
+
+    margin-bottom:24px;
+
+}
+
+.informacoes span{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    background:#fafafa;
+
+    border:1px solid #ececec;
+
+    border-radius:10px;
+
+    padding:12px;
+
+    font-size:14px;
+
+    font-weight:500;
+
+}
+
+
+
+/* ==========================================================
+   PREÇO
+========================================================== */
+
+.preco{
+
+    font-size:31px;
+
+    color:var(--dourado);
+
+    font-weight:700;
+
+    margin-bottom:22px;
+
+}
+
+
+
+/* ==========================================================
+   BOTÃO
+========================================================== */
+
+.botao-whatsapp{
+
+    width:100%;
+
+    height:52px;
+
+    border-radius:12px;
+
+    background:var(--dourado);
 
     color:white;
 
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
     text-decoration:none;
 
-    padding:15px;
+    font-weight:600;
 
-    border-radius:8px;
+    transition:.30s;
 
-    transition:.3s;
-
-}
-
-.botao:hover{
-
-    background:#8c131b;
+    margin-top:auto;
 
 }
 
-@media(max-width:768px){
+.botao-whatsapp:hover{
 
-    header h1{
+    background:var(--dourado-hover);
 
-        font-size:30px;
+}
+
+
+
+/* ==========================================================
+   CARREGAR MAIS
+========================================================== */
+
+.carregar-mais{
+
+    grid-column:1/-1;
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-top:25px;
+
+}
+
+.carregar-mais button{
+
+    background:var(--dourado);
+
+    color:white;
+
+    border:none;
+
+    padding:18px 38px;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:.30s;
+
+}
+
+.carregar-mais button:hover{
+
+    background:var(--dourado-hover);
+
+}
+
+
+
+/* ==========================================================
+   SEM IMÓVEIS
+========================================================== */
+
+.sem-imoveis{
+
+    grid-column:1/-1;
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:70px;
+
+    text-align:center;
+
+    box-shadow:var(--shadow);
+
+}
+
+.sem-imoveis h2{
+
+    font-size:32px;
+
+    margin-bottom:15px;
+
+}
+
+.sem-imoveis p{
+
+    color:#666;
+
+    font-size:18px;
+
+}
+
+
+
+/* ==========================================================
+   LOADING
+========================================================== */
+
+.loading{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(255,255,255,.85);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+}
+
+.spinner{
+
+    width:60px;
+
+    height:60px;
+
+    border:6px solid #eee;
+
+    border-top:6px solid var(--dourado);
+
+    border-radius:50%;
+
+    animation:girar .8s linear infinite;
+
+}
+
+@keyframes girar{
+
+    to{
+
+        transform:rotate(360deg);
 
     }
 
-    .grid{
+}
+/* ==========================================================
+   RODAPÉ
+========================================================== */
+
+.rodape-imoveis{
+
+    margin-top:80px;
+
+    background:#222;
+
+    color:white;
+
+    padding:60px 0;
+
+}
+
+.rodape-container{
+
+    width:min(1400px,95%);
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:40px;
+
+}
+
+.rodape-info h3{
+
+    font-size:28px;
+
+    margin-bottom:15px;
+
+}
+
+.rodape-info p{
+
+    color:#d6d6d6;
+
+    max-width:500px;
+
+    line-height:1.7;
+
+}
+
+.rodape-contato{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+.rodape-contato p{
+
+    color:#d6d6d6;
+
+}
+
+
+
+/* ==========================================================
+   ANIMAÇÕES
+========================================================== */
+
+.card-imovel{
+
+    animation:fade .45s ease;
+
+}
+
+@keyframes fade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   SCROLLBAR
+========================================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#efefef;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:var(--dourado);
+
+    border-radius:30px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:var(--dourado-hover);
+
+}
+
+
+
+/* ==========================================================
+   RESPONSIVO
+========================================================== */
+
+@media(max-width:1200px){
+
+    .filtros{
+
+        grid-template-columns:
+
+        repeat(2,1fr);
+
+    }
+
+}
+
+
+
+@media(max-width:900px){
+
+    .hero-imoveis{
+
+        padding:80px 20px;
+
+    }
+
+    .hero-imoveis h1{
+
+        font-size:36px;
+
+    }
+
+    .hero-imoveis p{
+
+        font-size:18px;
+
+    }
+
+    .grid-imoveis{
+
+        grid-template-columns:
+
+        repeat(auto-fill,minmax(320px,1fr));
+
+    }
+
+}
+
+
+
+@media(max-width:768px){
+
+    .filtros{
+
+        grid-template-columns:1fr;
+
+        margin-top:-40px;
+
+    }
+
+    .grid-imoveis{
 
         grid-template-columns:1fr;
 
     }
 
-    .filtros{
+    .rodape-container{
 
-        flex-direction:column;
+        grid-template-columns:1fr;
+
+        text-align:center;
 
     }
 
-    .filtros select{
+    .preco{
 
-        width:100%;
+        font-size:26px;
 
     }
 
 }
+
+
+
+@media(max-width:500px){
+
+    .hero-imoveis{
+
+        padding:60px 20px;
+
+    }
+
+    .hero-imoveis h1{
+
+        font-size:30px;
+
+    }
+
+    .hero-imoveis p{
+
+        font-size:16px;
+
+    }
+
+    .conteudo{
+
+        padding:18px;
+
+    }
+
+    .informacoes{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .imagem{
+
+        height:220px;
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   MELHORIAS FUTURAS
+========================================================== */
+
+/*
+
+Classes já preparadas para futuras implementações:
+
+.badge-venda
+.badge-aluguel
+.badge-exclusivo
+.badge-lancamento
+
+.botao-favorito
+
+.mapa
+
+.sidebar-filtros
+
+.modal-imovel
+
+.gallery
+
+*/

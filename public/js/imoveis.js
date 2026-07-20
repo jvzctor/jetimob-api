@@ -1,15 +1,26 @@
-// ===============================
+// ======================================================
+// PORTAL DE IMÓVEIS - Z3 COMMERCE
+// Arquivo: imoveis.js
+// Parte 1
+// ======================================================
+
+
+
+// ======================================================
 // CONFIGURAÇÕES
-// ===============================
+// ======================================================
 
 const API = "https://jetimob-api-1.onrender.com/api/imoveis";
 
 const WHATSAPP = "5554997010512";
 
+const LIMITE_INICIAL = 12;
 
-// ===============================
-// ELEMENTOS
-// ===============================
+
+
+// ======================================================
+// ELEMENTOS HTML
+// ======================================================
 
 const lista = document.getElementById("lista-imoveis");
 
@@ -19,186 +30,143 @@ const pesquisa = document.getElementById("pesquisa");
 
 const filtroTipo = document.getElementById("tipo");
 
+const filtroCidade = document.getElementById("cidade");
+
 const filtroDormitorios = document.getElementById("dormitorios");
 
 const ordenacao = document.getElementById("ordenacao");
 
 
-// ===============================
-// VARIÁVEIS
-// ===============================
+
+// ======================================================
+// DADOS
+// ======================================================
 
 let todosImoveis = [];
 
-let imoveisFiltrados = [];
+let listaFiltrada = [];
+
+let quantidadeExibida = LIMITE_INICIAL;
 
 
-// ===============================
+
+// ======================================================
 // INICIAR
-// ===============================
+// ======================================================
 
 window.addEventListener("DOMContentLoaded", iniciar);
 
-async function iniciar(){
+async function iniciar() {
+
+    mostrarLoading();
 
     await carregarImoveis();
 
     popularTipos();
+
+    popularCidades();
 
     aplicarFiltros();
 
 }
 
 
-// ===============================
-// CARREGAR API
-// ===============================
 
-async function carregarImoveis(){
+// ======================================================
+// API
+// ======================================================
 
-    contador.innerHTML = "Carregando imóveis...";
+async function carregarImoveis() {
 
-    try{
+    try {
 
         const response = await fetch(API);
 
-        todosImoveis = await response.json();
+        if (!response.ok) {
 
-    }catch(e){
+            throw new Error("Erro ao carregar API");
 
-        console.error(e);
+        }
 
-        contador.innerHTML = "Erro ao carregar imóveis.";
+        const dados = await response.json();
+
+        todosImoveis = Array.isArray(dados) ? dados : [];
+
+    }
+
+    catch (erro) {
+
+        console.error(erro);
+
+        mostrarErro();
 
     }
 
 }
-// ===============================
-// RENDER
-// ===============================
 
-function render(listaImoveis){
+
+
+// ======================================================
+// LOADING
+// ======================================================
+
+function mostrarLoading() {
+
+    contador.innerHTML = "Carregando imóveis...";
 
     lista.innerHTML = "";
 
-    contador.innerHTML =
-        `${listaImoveis.length} imóveis encontrados`;
+}
 
-    listaImoveis.forEach(imovel=>{
 
-        lista.innerHTML += criarCard(imovel);
 
-    });
+// ======================================================
+// ERRO
+// ======================================================
+
+function mostrarErro() {
+
+    contador.innerHTML = "Erro ao carregar imóveis.";
+
+    lista.innerHTML = `
+        <div class="sem-imoveis">
+
+            <h2>Não foi possível carregar os imóveis.</h2>
+
+            <p>Tente novamente em alguns instantes.</p>
+
+        </div>
+    `;
 
 }
-// ===============================
-// CARD
-// ===============================
 
-function criarCard(imovel){
 
-    const titulo =
-        imovel.titulo ||
-        imovel.nome ||
-        "Imóvel";
 
-    const bairro =
-        imovel.bairro || "";
-
-    const cidade =
-        imovel.cidade || "";
-
-    const dormitorios =
-        imovel.dormitorios ||
-        imovel.quartos ||
-        0;
-
-    const banheiros =
-        imovel.banheiros ||
-        0;
-
-    const vagas =
-        imovel.vagas ||
-        imovel.garagens ||
-        0;
-
-    const area =
-        imovel.area ||
-        0;
-
-    const imagem =
-        imovel.imagem ||
-        "https://placehold.co/600x400";
-
-    const valor =
-        Number(imovel.valor || 0)
-        .toLocaleString("pt-BR");
-
-    return `
-
-<div class="card">
-
-<img
-src="${imagem}"
-loading="lazy">
-
-<div class="card-body">
-
-<h2>${titulo}</h2>
-
-<p class="local">
-
-${bairro} - ${cidade}
-
-</p>
-
-<div class="info">
-
-<span>🛏 ${dormitorios}</span>
-
-<span>🚿 ${banheiros}</span>
-
-<span>🚗 ${vagas}</span>
-
-<span>📐 ${area} m²</span>
-
-</div>
-
-<div class="preco">
-
-R$ ${valor}
-
-</div>
-
-<a
-class="botao"
-target="_blank"
-href="https://wa.me/${WHATSAPP}?text=Olá! Tenho interesse no imóvel ${imovel.codigo}">
-
-Falar no WhatsApp
-
-</a>
-
-</div>
-
-</div>
-
-`;
-
-}
-// ===============================
+// ======================================================
 // POPULAR TIPOS
-// ===============================
+// ======================================================
 
 function popularTipos() {
 
-    const tipos = [...new Set(
+    if (!filtroTipo) return;
 
-        todosImoveis
-            .map(i => i.tipo)
-            .filter(Boolean)
+    filtroTipo.innerHTML = `
+        <option value="">Todos os tipos</option>
+    `;
 
-    )].sort();
+    const tipos = [
+
+        ...new Set(
+
+            todosImoveis
+
+                .map(i => i.tipo)
+
+                .filter(Boolean)
+
+        )
+
+    ].sort();
 
     tipos.forEach(tipo => {
 
@@ -213,48 +181,361 @@ function popularTipos() {
 }
 
 
-// ===============================
-// APLICAR FILTROS
-// ===============================
+
+// ======================================================
+// POPULAR CIDADES
+// ======================================================
+
+function popularCidades() {
+
+    if (!filtroCidade) return;
+
+    filtroCidade.innerHTML = `
+        <option value="">Todas as cidades</option>
+    `;
+
+    const cidades = [
+
+        ...new Set(
+
+            todosImoveis
+
+                .map(i => i.cidade)
+
+                .filter(Boolean)
+
+        )
+
+    ].sort();
+
+    cidades.forEach(cidade => {
+
+        filtroCidade.innerHTML += `
+            <option value="${cidade}">
+                ${cidade}
+            </option>
+        `;
+
+    });
+
+}
+
+// ======================================================
+// RENDER
+// ======================================================
+
+function render() {
+
+    lista.innerHTML = "";
+
+    contador.innerHTML =
+        `Mostrando ${Math.min(quantidadeExibida, listaFiltrada.length)} de ${listaFiltrada.length} imóveis`;
+
+    if (listaFiltrada.length === 0) {
+
+        lista.innerHTML = `
+
+            <div class="sem-imoveis">
+
+                <h2>Nenhum imóvel encontrado</h2>
+
+                <p>Tente alterar os filtros de pesquisa.</p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+    listaFiltrada
+        .slice(0, quantidadeExibida)
+        .forEach(imovel => {
+
+            lista.innerHTML += criarCard(imovel);
+
+        });
+
+    renderBotaoCarregarMais();
+
+}
+
+
+
+// ======================================================
+// BOTÃO CARREGAR MAIS
+// ======================================================
+
+function renderBotaoCarregarMais() {
+
+    if (quantidadeExibida >= listaFiltrada.length) return;
+
+    lista.innerHTML += `
+
+        <div class="carregar-mais">
+
+            <button id="btnCarregarMais">
+
+                Carregar mais imóveis
+
+            </button>
+
+        </div>
+
+    `;
+
+    document
+        .getElementById("btnCarregarMais")
+        .addEventListener("click", () => {
+
+            quantidadeExibida += LIMITE_INICIAL;
+
+            render();
+
+        });
+
+}
+
+
+
+// ======================================================
+// CARD
+// ======================================================
+
+function criarCard(imovel) {
+
+    const imagem = obterImagem(imovel);
+
+    const titulo =
+
+        imovel.titulo ||
+
+        imovel.nome ||
+
+        "Imóvel";
+
+    const cidade =
+
+        imovel.cidade ||
+
+        "";
+
+    const bairro =
+
+        imovel.bairro ||
+
+        "";
+
+    const dormitorios =
+
+        imovel.dormitorios ||
+
+        imovel.quartos ||
+
+        0;
+
+    const banheiros =
+
+        imovel.banheiros ||
+
+        0;
+
+    const vagas =
+
+        imovel.vagas ||
+
+        imovel.garagens ||
+
+        0;
+
+    const area =
+
+        imovel.area ||
+
+        0;
+
+    const valor = formatarValor(
+
+        imovel.valor ||
+
+        0
+
+    );
+
+    return `
+
+<div class="card-imovel">
+
+    <div class="imagem">
+
+        <img
+
+            src="${imagem}"
+
+            loading="lazy"
+
+            alt="${titulo}"
+
+            onerror="this.src='https://placehold.co/800x600?text=Sem+Imagem'">
+
+    </div>
+
+    <div class="conteudo">
+
+        <h3>
+
+            ${titulo}
+
+        </h3>
+
+        <p class="endereco">
+
+            ${bairro} ${cidade ? "- " + cidade : ""}
+
+        </p>
+
+        <div class="informacoes">
+
+            <span>🛏 ${dormitorios}</span>
+
+            <span>🚿 ${banheiros}</span>
+
+            <span>🚗 ${vagas}</span>
+
+            <span>📐 ${area} m²</span>
+
+        </div>
+
+        <div class="preco">
+
+            ${valor}
+
+        </div>
+
+        <a
+
+            class="botao-whatsapp"
+
+            target="_blank"
+
+            href="${linkWhatsApp(imovel)}">
+
+            Tenho interesse
+
+        </a>
+
+    </div>
+
+</div>
+
+`;
+
+}
+
+
+
+// ======================================================
+// UTILS
+// ======================================================
+
+function obterImagem(imovel) {
+
+    return (
+
+        imovel.imagem ||
+
+        imovel.foto ||
+
+        imovel.thumbnail ||
+
+        "https://placehold.co/800x600?text=Sem+Imagem"
+
+    );
+
+}
+
+
+
+function formatarValor(valor) {
+
+    return Number(valor).toLocaleString(
+
+        "pt-BR",
+
+        {
+
+            style: "currency",
+
+            currency: "BRL"
+
+        }
+
+    );
+
+}
+
+
+
+function linkWhatsApp(imovel) {
+
+    return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
+
+`Olá! Tenho interesse no imóvel ${imovel.codigo || ""} ${imovel.titulo || ""}.`
+
+    )}`;
+
+}
+// ======================================================
+// FILTROS
+// ======================================================
 
 function aplicarFiltros() {
 
-    let lista = [...todosImoveis];
+    quantidadeExibida = LIMITE_INICIAL;
 
-    // ------------------------
+    let resultado = [...todosImoveis];
+
+
+
+    // ======================================
     // PESQUISA
-    // ------------------------
+    // ======================================
 
-    const texto = pesquisa.value
-        .trim()
-        .toLowerCase();
+    if (pesquisa && pesquisa.value.trim() !== "") {
 
-    if (texto !== "") {
+        const texto = pesquisa.value
+            .trim()
+            .toLowerCase();
 
-        lista = lista.filter(imovel => {
+        resultado = resultado.filter(imovel => {
 
-            return (
+            return [
 
-                String(imovel.codigo || "")
+                imovel.codigo,
+
+                imovel.titulo,
+
+                imovel.nome,
+
+                imovel.tipo,
+
+                imovel.cidade,
+
+                imovel.bairro,
+
+                imovel.referencia
+
+            ]
+
+            .filter(Boolean)
+
+            .some(campo =>
+
+                String(campo)
+
                     .toLowerCase()
-                    .includes(texto)
 
-                ||
-
-                String(imovel.titulo || "")
-                    .toLowerCase()
-                    .includes(texto)
-
-                ||
-
-                String(imovel.bairro || "")
-                    .toLowerCase()
-                    .includes(texto)
-
-                ||
-
-                String(imovel.cidade || "")
-                    .toLowerCase()
                     .includes(texto)
 
             );
@@ -264,13 +545,20 @@ function aplicarFiltros() {
     }
 
 
-    // ------------------------
+
+    // ======================================
     // TIPO
-    // ------------------------
+    // ======================================
 
-    if (filtroTipo.value !== "") {
+    if (
 
-        lista = lista.filter(imovel =>
+        filtroTipo &&
+
+        filtroTipo.value !== ""
+
+    ) {
+
+        resultado = resultado.filter(imovel =>
 
             imovel.tipo === filtroTipo.value
 
@@ -279,114 +567,223 @@ function aplicarFiltros() {
     }
 
 
-    // ------------------------
+
+    // ======================================
+    // CIDADE
+    // ======================================
+
+    if (
+
+        filtroCidade &&
+
+        filtroCidade.value !== ""
+
+    ) {
+
+        resultado = resultado.filter(imovel =>
+
+            imovel.cidade === filtroCidade.value
+
+        );
+
+    }
+
+
+
+    // ======================================
     // DORMITÓRIOS
-    // ------------------------
+    // ======================================
 
-    if (filtroDormitorios.value !== "") {
+    if (
 
-        const minimo =
-            Number(filtroDormitorios.value);
+        filtroDormitorios &&
 
-        lista = lista.filter(imovel => {
+        filtroDormitorios.value !== ""
 
-            const dorm =
-                Number(
-                    imovel.dormitorios ||
-                    imovel.quartos ||
-                    0
-                );
+    ) {
 
-            return dorm >= minimo;
+        resultado = resultado.filter(imovel => {
+
+            const quartos = Number(
+
+                imovel.dormitorios ||
+
+                imovel.quartos ||
+
+                0
+
+            );
+
+            return quartos >= Number(
+
+                filtroDormitorios.value
+
+            );
 
         });
 
     }
 
 
-    // ------------------------
+
+    // ======================================
     // ORDENAÇÃO
-    // ------------------------
+    // ======================================
 
-    switch (ordenacao.value) {
+    if (ordenacao) {
 
-        case "menor":
+        switch (ordenacao.value) {
 
-            lista.sort((a, b) =>
+            case "menor":
 
-                Number(a.valor || 0) -
-                Number(b.valor || 0)
+                resultado.sort(
 
-            );
+                    (a, b) =>
 
-            break;
+                        Number(a.valor || 0)
 
+                        -
 
-        case "maior":
+                        Number(b.valor || 0)
 
-            lista.sort((a, b) =>
-
-                Number(b.valor || 0) -
-                Number(a.valor || 0)
-
-            );
+                );
 
             break;
 
 
-        case "area":
 
-            lista.sort((a, b) =>
+            case "maior":
 
-                Number(b.area || 0) -
-                Number(a.area || 0)
+                resultado.sort(
 
-            );
+                    (a, b) =>
+
+                        Number(b.valor || 0)
+
+                        -
+
+                        Number(a.valor || 0)
+
+                );
 
             break;
+
+
+
+            case "area":
+
+                resultado.sort(
+
+                    (a, b) =>
+
+                        Number(b.area || 0)
+
+                        -
+
+                        Number(a.area || 0)
+
+                );
+
+            break;
+
+
+
+            case "recentes":
+
+                resultado.reverse();
+
+            break;
+
+        }
 
     }
 
-    imoveisFiltrados = lista;
 
-    render(imoveisFiltrados);
+
+    listaFiltrada = resultado;
+
+    render();
 
 }
 
 
 
-// ===============================
+// ======================================================
 // EVENTOS
-// ===============================
+// ======================================================
 
-pesquisa.addEventListener(
+if (pesquisa) {
 
-    "input",
+    pesquisa.addEventListener(
 
-    aplicarFiltros
+        "input",
 
-);
+        aplicarFiltros
 
-filtroTipo.addEventListener(
+    );
 
-    "change",
+}
 
-    aplicarFiltros
 
-);
 
-filtroDormitorios.addEventListener(
+if (filtroTipo) {
 
-    "change",
+    filtroTipo.addEventListener(
 
-    aplicarFiltros
+        "change",
 
-);
+        aplicarFiltros
 
-ordenacao.addEventListener(
+    );
 
-    "change",
+}
 
-    aplicarFiltros
 
-);
+
+if (filtroCidade) {
+
+    filtroCidade.addEventListener(
+
+        "change",
+
+        aplicarFiltros
+
+    );
+
+}
+
+
+
+if (filtroDormitorios) {
+
+    filtroDormitorios.addEventListener(
+
+        "change",
+
+        aplicarFiltros
+
+    );
+
+}
+
+
+
+if (ordenacao) {
+
+    ordenacao.addEventListener(
+
+        "change",
+
+        aplicarFiltros
+
+    );
+
+}
+
+
+
+// ======================================================
+// FIM DO ARQUIVO
+// ======================================================
+
+console.log("Portal de imóveis carregado com sucesso.");
