@@ -143,13 +143,27 @@
 
             const card=document.createElement("a");
 
-            card.className="z3-card";
+            card.className = "z3-card";
 
-            card.target="_blank";
+card.target = "_blank";
 
-            card.rel="noopener";
+card.rel = "noopener";
 
-            card.href=imovel.link || "#";
+const telefone = "5554997010512"; 
+
+const mensagem = encodeURIComponent(
+`Olá! Tenho interesse neste imóvel.
+
+🏠 ${imovel.titulo}
+
+📍 ${imovel.bairro || ""} - ${imovel.cidade || ""}
+
+💰 Valor: R$ ${valor}
+
+Gostaria de falar com um corretor.`
+);
+
+card.href = `https://wa.me/${telefone}?text=${mensagem}`;
 
             
             /* ==========================
@@ -322,12 +336,12 @@
                     </div>
 
                     <button
-                        class="z3-btn"
-                        type="button">
+    class="z3-btn"
+    type="button">
 
-                        Ver detalhes
+    💬 Falar com um corretor
 
-                    </button>
+</button>
 
                 </div>
 
