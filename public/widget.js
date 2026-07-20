@@ -1,113 +1,139 @@
 /* ==========================================================
-   Z3 WIDGET IMÓVEIS V5
-   Desenvolvido para Nil Imóveis
-========================================================== */
+   Z3 WIDGET IMÓVEIS V6
+   Desenvolvido por Z3 Commerce
+   ========================================================== */
 
-(async () => {
+(() => {
 
-    const script = document.currentScript;
+    "use strict";
 
     const API = "https://jetimob-api-1.onrender.com/api/imoveis";
 
-    /* ==========================
-       PARÂMETROS
-    ========================== */
+    const WHATSAPP = "5554997010512";
 
-    const filtros = {
+    const script = document.currentScript;
 
-        limite: script.dataset.limite || 6,
+    if (!script) return;
+
+    /* ==========================================================
+       CONFIGURAÇÕES
+    ========================================================== */
+
+    const config = {
+
+        limite: Number(script.dataset.limite || 6),
+
         cidade: script.dataset.cidade || "",
+
         bairro: script.dataset.bairro || "",
+
         tipo: script.dataset.tipo || "",
+
         finalidade: script.dataset.finalidade || "",
+
         dormitorios: script.dataset.dormitorios || "",
+
         banheiros: script.dataset.banheiros || "",
+
         vagas: script.dataset.vagas || "",
+
         valorMin: script.dataset.valormin || "",
+
         valorMax: script.dataset.valormax || "",
+
         ordenar: script.dataset.ordenar || ""
 
     };
 
-    /* ==========================
+    /* ==========================================================
        CONTAINER
-    ========================== */
+    ========================================================== */
 
     const container = document.createElement("section");
 
     container.id = "z3-imoveis";
 
-    script.parentNode.insertBefore(
-        container,
-        script.nextSibling
-    );
+    script.insertAdjacentElement("afterend", container);
 
-    /* ==========================
-       SKELETON
-    ========================== */
+    /* ==========================================================
+       HELPERS
+    ========================================================== */
 
-    container.innerHTML = `
-        <div class="z3-loading">
+    const money = valor =>
 
-            ${Array(6).fill("").map(() => `
+        Number(valor || 0).toLocaleString("pt-BR", {
+            minimumFractionDigits: 0
+        });
 
-                <div class="z3-skeleton">
+    const texto = valor =>
 
-                    <div class="z3-skeleton-image"></div>
+        valor && String(valor).trim().length
+            ? valor
+            : "--";
 
-                    <div class="z3-skeleton-body">
+    const imagem = item => {
 
-                        <div class="z3-line"></div>
-                        <div class="z3-line"></div>
-                        <div class="z3-line"></div>
-                        <div class="z3-line"></div>
+        if (item.imagem && item.imagem.length)
+            return item.imagem;
 
-                    </div>
+        if (item.foto && item.foto.length)
+            return item.foto;
 
-                </div>
+        return "https://placehold.co/900x600?text=Sem+Imagem";
 
-            `).join("")}
+    };
 
-        </div>
-    `;
+    const montarMensagem = item => {
 
-    /* ==========================
-       URL
-    ========================== */
+        return encodeURIComponent(
 
-    const params = new URLSearchParams();
+`Olá!
 
-    Object.entries(filtros).forEach(([key, value]) => {
+Tenho interesse neste imóvel.
 
-        if (value !== "")
-            params.append(key, value);
+🏠 ${texto(item.titulo)}
 
-    });
+📍 ${texto(item.bairro)} - ${texto(item.cidade)}
 
-    try {
+💰 Valor: R$ ${money(item.valor)}
 
-        const resposta = await fetch(
-            `${API}?${params.toString()}`
+Gostaria de falar com um corretor.`
+
         );
 
-        if (!resposta.ok)
-            throw new Error("Erro na API");
+    };
 
-        const imoveis = await resposta.json();
+    /* ==========================================================
+       LOADING
+    ========================================================== */
 
-        renderizar(imoveis);
-
-    }
-
-    catch (erro) {
-
-        console.error(erro);
+    function loading(){
 
         container.innerHTML = `
 
-            <div class="z3-error">
+            <div class="z3-loading">
 
-                Não foi possível carregar os imóveis.
+                ${Array(config.limite).fill("").map(() => `
+
+                    <div class="z3-skeleton">
+
+                        <div class="z3-skeleton-image"></div>
+
+                        <div class="z3-skeleton-body">
+
+                            <div class="z3-line"></div>
+
+                            <div class="z3-line"></div>
+
+                            <div class="z3-line"></div>
+
+                            <div class="z3-line"></div>
+
+                        </div>
+
+                    </div>
+
+                `).join("")}
 
             </div>
 
@@ -116,14 +142,68 @@
     }
 
     /* ==========================================================
+       API
+    ========================================================== */
+
+    async function carregar(){
+
+        loading();
+
+        const params = new URLSearchParams();
+
+        Object.entries(config).forEach(([chave, valor]) => {
+
+            if (
+                valor !== "" &&
+                valor !== null &&
+                valor !== undefined
+            ){
+                params.append(chave, valor);
+            }
+
+        });
+
+        try{
+
+            const resposta = await fetch(
+                `${API}?${params.toString()}`
+            );
+
+            if(!resposta.ok)
+                throw new Error("Erro ao consultar API.");
+
+            const lista = await resposta.json();
+
+            render(lista);
+
+        }
+
+        catch(error){
+
+            console.error(error);
+
+            container.innerHTML = `
+
+                <div class="z3-error">
+
+                    Não foi possível carregar os imóveis.
+
+                </div>
+
+            `;
+
+        }
+
+    }
+    /* ==========================================================
        RENDER
     ========================================================== */
 
-    function renderizar(lista){
+    function render(lista){
 
-        if(!lista.length){
+        if(!Array.isArray(lista) || lista.length === 0){
 
-            container.innerHTML=`
+            container.innerHTML = `
 
                 <div class="z3-error">
 
@@ -137,55 +217,29 @@
 
         }
 
-        container.innerHTML="";
+        container.innerHTML = "";
 
-        lista.forEach(imovel=>{
+        lista.forEach((item,index)=>{
 
-            const card=document.createElement("a");
+            const card = document.createElement("a");
 
             card.className = "z3-card";
 
-card.target = "_blank";
+            card.target = "_blank";
 
-card.rel = "noopener";
+            card.rel = "noopener";
 
-const telefone = "5554997010512"; 
-
-const mensagem = encodeURIComponent(
-`Olá! Tenho interesse neste imóvel.
-
-🏠 ${imovel.titulo}
-
-📍 ${imovel.bairro || ""} - ${imovel.cidade || ""}
-
-💰 Valor: R$ ${valor}
-
-Gostaria de falar com um corretor.`
-);
-
-card.href = `https://wa.me/${telefone}?text=${mensagem}`;
-
-            
-            /* ==========================
-               TAG
-            ========================== */
+            card.href =
+                `https://wa.me/${WHATSAPP}?text=${montarMensagem(item)}`;
 
             const tag =
-                imovel.finalidade ||
-                imovel.tipo ||
+                item.finalidade ||
+                item.tipo ||
                 "Imóvel";
 
-            const imagem =
-                imovel.imagem && imovel.imagem.length
-                    ? imovel.imagem
-                    : "https://placehold.co/800x600?text=Sem+Imagem";
+            const foto = imagem(item);
 
-            const valor = Number(imovel.valor || 0)
-                .toLocaleString("pt-BR",{
-                    minimumFractionDigits:0
-                });
-
-            card.innerHTML = `
+            const html = `
 
                 <div class="z3-image">
 
@@ -196,9 +250,9 @@ card.href = `https://wa.me/${telefone}?text=${mensagem}`;
                     </span>
 
                     <img
-                        src="${imagem}"
+                        src="${foto}"
                         loading="lazy"
-                        alt="${imovel.titulo}"
+                        alt="${texto(item.titulo)}"
                     >
 
                 </div>
@@ -207,7 +261,7 @@ card.href = `https://wa.me/${telefone}?text=${mensagem}`;
 
                     <div class="z3-title">
 
-                        ${imovel.titulo || "Imóvel"}
+                        ${texto(item.titulo)}
 
                     </div>
 
@@ -215,15 +269,15 @@ card.href = `https://wa.me/${telefone}?text=${mensagem}`;
 
                         <svg viewBox="0 0 24 24">
 
-                            <path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/>
+                            <path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9a2 2 0 100-4 2 2 0 000 4z"/>
 
                         </svg>
 
-                        ${imovel.bairro || ""}
+                        ${texto(item.bairro)}
 
-                        ${imovel.bairro && imovel.cidade ? " • " : ""}
+                        ${item.cidade ? " • " : ""}
 
-                        ${imovel.cidade || ""}
+                        ${texto(item.cidade)}
 
                     </div>
 
@@ -239,7 +293,7 @@ card.href = `https://wa.me/${telefone}?text=${mensagem}`;
 
                             <strong>
 
-                                ${imovel.dormitorios || 0}
+                                ${item.dormitorios || 0}
 
                             </strong>
 
@@ -261,7 +315,7 @@ card.href = `https://wa.me/${telefone}?text=${mensagem}`;
 
                             <strong>
 
-                                ${imovel.banheiros || 0}
+                                ${item.banheiros || 0}
 
                             </strong>
 
@@ -283,7 +337,7 @@ card.href = `https://wa.me/${telefone}?text=${mensagem}`;
 
                             <strong>
 
-                                ${imovel.vagas || 0}
+                                ${item.vagas || 0}
 
                             </strong>
 
@@ -305,7 +359,7 @@ card.href = `https://wa.me/${telefone}?text=${mensagem}`;
 
                             <strong>
 
-                                ${imovel.area || "--"}
+                                ${item.area || "--"}
 
                             </strong>
 
@@ -329,58 +383,124 @@ card.href = `https://wa.me/${telefone}?text=${mensagem}`;
 
                         <strong>
 
-                            R$ ${valor}
+                            R$ ${money(item.valor)}
 
                         </strong>
 
                     </div>
 
                     <button
-    class="z3-btn"
-    type="button">
+                        class="z3-btn"
+                        type="button">
 
-    💬 Falar com um corretor
+                        💬 Falar com um corretor
 
-</button>
+                    </button>
 
                 </div>
 
             `;
 
+            card.innerHTML = html;
+
+            card.style.opacity = "0";
+
+            card.style.transform = "translateY(25px)";
+
             container.appendChild(card);
 
-        });
+            requestAnimationFrame(()=>{
 
-        
-        /* ==========================
-           ANIMAÇÃO DE ENTRADA
-        ========================== */
-
-        requestAnimationFrame(() => {
-
-            const cards =
-                container.querySelectorAll(".z3-card");
-
-            cards.forEach((card, index) => {
-
-                card.style.opacity = "0";
-                card.style.transform = "translateY(30px)";
-
-                setTimeout(() => {
+                setTimeout(()=>{
 
                     card.style.transition =
-                        "all .45s ease";
+                        ".45s ease";
 
                     card.style.opacity = "1";
+
                     card.style.transform =
                         "translateY(0)";
 
-                }, index * 80);
+                },index*80);
 
             });
 
         });
 
     }
+        /* ==========================================================
+       OBSERVADORES
+    ========================================================== */
+
+    const observer = new IntersectionObserver((entries)=>{
+
+        entries.forEach(entry=>{
+
+            if(entry.isIntersecting){
+
+                entry.target.classList.add("z3-visible");
+
+                observer.unobserve(entry.target);
+
+            }
+
+        });
+
+    },{
+        threshold:.15
+    });
+
+    function observarCards(){
+
+        container
+            .querySelectorAll(".z3-card")
+            .forEach(card=>observer.observe(card));
+
+    }
+
+    /* ==========================================================
+       REFRESH
+    ========================================================== */
+
+    const atualizar = async()=>{
+
+        try{
+
+            await carregar();
+
+            observarCards();
+
+        }
+
+        catch(e){
+
+            console.error(e);
+
+        }
+
+    };
+
+    /* ==========================================================
+       AUTO REFRESH OPCIONAL
+    ========================================================== */
+
+    if(script.dataset.refresh){
+
+        const tempo =
+            Number(script.dataset.refresh) * 1000;
+
+        if(tempo > 0){
+
+            setInterval(atualizar,tempo);
+
+        }
+
+    }
+
+    /* ==========================================================
+       START
+    ========================================================== */
+
+    atualizar();
 
 })();
