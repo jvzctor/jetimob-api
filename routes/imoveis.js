@@ -7,7 +7,21 @@ router.get("/", async (req, res) => {
 
     try {
 
-        const imoveis = await listarImoveis();
+       const filtros = {
+    cidade: req.query.cidade,
+    bairro: req.query.bairro,
+    tipo: req.query.tipo,
+    finalidade: req.query.finalidade,
+    dormitorios: req.query.dormitorios,
+    banheiros: req.query.banheiros,
+    vagas: req.query.vagas,
+    valorMin: req.query.valorMin,
+    valorMax: req.query.valorMax,
+    ordenar: req.query.ordenar,
+    limite: req.query.limite
+};
+
+        const imoveis = await listarImoveis(filtros);
 
         res.json(imoveis);
 
