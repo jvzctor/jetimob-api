@@ -1,112 +1,99 @@
-/* =====================================================
-   Z3 WIDGET IMÓVEIS v4
-===================================================== */
+/* ==========================================================
+   Z3 WIDGET IMÓVEIS V5
+   Desenvolvido para Nil Imóveis
+   ========================================================== */
 
 :root{
 
-    --z3-primary:#CFA43A;
-    --z3-primary-hover:#b88f2d;
+    --z3-primary:#b38b3d;
+    --z3-primary-hover:#9b7431;
 
-    --z3-dark:#151515;
-    --z3-text:#5E5E5E;
-    --z3-light:#FAFAFA;
+    --z3-dark:#1e1e1e;
+    --z3-text:#3d3d3d;
+    --z3-light:#777;
+    --z3-bg:#f6f6f6;
+    --z3-border:#ececec;
 
-    --z3-border:#ECECEC;
+    --z3-radius:18px;
 
-    --z3-shadow:0 10px 28px rgba(0,0,0,.08);
+    --z3-shadow:
+        0 8px 30px rgba(0,0,0,.08);
 
-    --z3-radius:16px;
+    --z3-transition:.35s ease;
 
 }
-
-/* =====================================================
-   GRID
-===================================================== */
 
 #z3-imoveis{
 
     width:100%;
-    max-width:960px;
+    max-width:1280px;
 
-    margin:50px auto;
+    margin:60px auto;
 
-    display:grid !important;
+    padding:0 18px;
 
-    grid-template-columns:repeat(3,minmax(0,1fr));
+    display:grid;
 
-    gap:14px;
+    grid-template-columns:
+        repeat(auto-fit,minmax(360px,1fr));
 
-    padding:0;
-
-    box-sizing:border-box;
-
-    align-items:start;
-
-}
-
-#z3-imoveis *,
-#z3-imoveis *:before,
-#z3-imoveis *:after{
+    gap:24px;
 
     box-sizing:border-box;
 
 }
 
-/* =====================================================
+/* ==========================
    CARD
-===================================================== */
+========================== */
 
 .z3-card{
 
-    width:100%;
-
     display:flex;
-
     flex-direction:column;
-
-    overflow:hidden;
 
     background:#FFF;
 
-    border-radius:16px;
+    border-radius:var(--z3-radius);
+
+    overflow:hidden;
 
     text-decoration:none;
 
-    color:inherit;
+    box-shadow:var(--z3-shadow);
 
-    border:1px solid #EFEFEF;
-
-    box-shadow:0 8px 22px rgba(0,0,0,.08);
-
-    transition:.30s ease;
+    transition:all var(--z3-transition);
 
     position:relative;
 
-    height:100%;
+    min-height:600px;
+
+    border:1px solid var(--z3-border);
 
 }
 
 .z3-card:hover{
 
-    transform:translateY(-6px);
+    transform:translateY(-8px);
 
-    box-shadow:0 16px 40px rgba(0,0,0,.14);
+    box-shadow:
+        0 20px 45px rgba(0,0,0,.12);
 
 }
 
-/* =====================================================
+/* ==========================
    FOTO
-===================================================== */
+========================== */
 
 .z3-image{
 
+    position:relative;
+
     width:100%;
 
-    aspect-ratio:4/3;
+    height:270px;
 
     overflow:hidden;
-
-    position:relative;
 
     background:#EEE;
 
@@ -115,14 +102,12 @@
 .z3-image img{
 
     width:100%;
-
     height:100%;
 
     object-fit:cover;
 
-    display:block;
-
-    transition:.5s;
+    transition:
+        transform .6s ease;
 
 }
 
@@ -132,53 +117,40 @@
 
 }
 
-.z3-image:after{
+/* ==========================
+   TAG
+========================== */
 
-    content:"";
-
-    position:absolute;
-
-    inset:0;
-
-    background:linear-gradient(to top,rgba(0,0,0,.30),transparent);
-
-}
-
-/* =====================================================
-   BADGE
-===================================================== */
-
-.z3-badge{
+.z3-tag{
 
     position:absolute;
 
-    top:14px;
+    left:18px;
+    top:18px;
 
-    left:14px;
-
-    z-index:2;
-
-    background:#CFA43A;
+    background:var(--z3-primary);
 
     color:#FFF;
 
-    font-size:11px;
+    font-size:12px;
 
     font-weight:700;
 
+    letter-spacing:.6px;
+
+    padding:7px 12px;
+
+    border-radius:40px;
+
     text-transform:uppercase;
 
-    border-radius:50px;
-
-    padding:7px 14px;
-
-    letter-spacing:.5px;
+    z-index:5;
 
 }
 
-/* =====================================================
-   INFO
-===================================================== */
+/* ==========================
+   CONTEÚDO
+========================== */
 
 .z3-info{
 
@@ -188,53 +160,85 @@
 
     flex:1;
 
-    padding:18px;
+    padding:22px;
 
 }
 
-.z3-info h3{
+.z3-title{
 
-    font-size:19px;
+    font-size:22px;
+
+    color:var(--z3-dark);
 
     font-weight:700;
 
-    color:#151515;
-
     line-height:1.35;
 
-    margin:0;
+    margin-bottom:10px;
 
-    min-height:52px;
+    display:-webkit-box;
 
-}
+    -webkit-line-clamp:2;
 
-.z3-local{
+    -webkit-box-orient:vertical;
 
-    margin:10px 0 18px;
-
-    font-size:14px;
-
-    color:#777;
+    overflow:hidden;
 
 }
 
-/* =====================================================
-   ÍCONES
-===================================================== */
+.z3-location{
 
-.z3-icons{
+    display:flex;
 
-    display:grid;
-
-    grid-template-columns:repeat(4,1fr);
+    align-items:center;
 
     gap:8px;
+
+    color:#666;
+
+    font-size:14px;
 
     margin-bottom:18px;
 
 }
 
-.z3-icons span{
+.z3-location svg{
+
+    width:18px;
+    height:18px;
+
+    fill:var(--z3-primary);
+
+    flex:none;
+
+}
+/* ==========================================================
+   INFORMAÇÕES DO IMÓVEL
+========================================================== */
+
+.z3-features{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:18px 0;
+
+    border-top:1px solid var(--z3-border);
+
+    border-bottom:1px solid var(--z3-border);
+
+    margin-bottom:22px;
+
+}
+
+.z3-feature{
+
+    flex:1;
 
     display:flex;
 
@@ -244,252 +248,259 @@
 
     justify-content:center;
 
-    background:#FAFAFA;
-
-    border:1px solid #EFEFEF;
-
-    border-radius:10px;
-
-    padding:10px 4px;
-
-    transition:.25s;
+    gap:8px;
 
 }
 
-.z3-icons svg{
+.z3-feature svg{
 
-    width:18px;
+    width:22px;
+    height:22px;
 
-    height:18px;
-
-    color:#CFA43A;
-
-}
-
-.z3-icons small{
-
-    margin-top:4px;
-
-    font-size:11px;
-
-    color:#888;
+    fill:var(--z3-primary);
 
 }
 
-.z3-icons strong{
+.z3-feature span{
 
     font-size:13px;
 
-    color:#151515;
+    color:#666;
 
 }
 
-/* =====================================================
+.z3-feature strong{
+
+    font-size:15px;
+
+    color:#1f1f1f;
+
+}
+
+/* ==========================================================
    PREÇO
-===================================================== */
+========================================================== */
 
 .z3-price{
 
     margin-top:auto;
 
-    margin-bottom:18px;
+    margin-bottom:20px;
+
+}
+
+.z3-price small{
 
     display:block;
 
-    font-size:28px;
+    color:#777;
+
+    font-size:13px;
+
+    margin-bottom:5px;
+
+}
+
+.z3-price strong{
+
+    display:block;
+
+    font-size:31px;
+
+    color:var(--z3-primary);
 
     font-weight:800;
 
-    color:#151515;
+    letter-spacing:-.5px;
+
+    line-height:1;
 
 }
-/* =====================================================
+
+/* ==========================================================
    BOTÃO
-===================================================== */
+========================================================== */
 
 .z3-btn{
 
     width:100%;
 
-    height:48px;
+    height:54px;
 
     border:none;
 
     border-radius:12px;
 
-    background:#151515;
+    background:var(--z3-primary);
 
     color:#FFF;
 
-    font-size:15px;
+    font-size:16px;
 
     font-weight:700;
 
     cursor:pointer;
 
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    transition:.30s ease;
+    transition:all .30s ease;
 
 }
 
 .z3-btn:hover{
 
-    background:#CFA43A;
+    background:var(--z3-primary-hover);
 
-    color:#151515;
-
-}
-
-/* =====================================================
-   LOADING / EMPTY / ERROR
-===================================================== */
-
-.z3-loading,
-.z3-empty,
-.z3-error{
-
-    grid-column:1/-1;
-
-    width:100%;
-
-    padding:70px 30px;
-
-    border-radius:16px;
-
-    text-align:center;
-
-    background:#FFF;
-
-    border:1px solid #ECECEC;
-
-    box-shadow:0 8px 20px rgba(0,0,0,.05);
+    transform:translateY(-2px);
 
 }
+
+/* ==========================================================
+   LOADING
+========================================================== */
 
 .z3-loading{
 
-    color:#666;
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:24px;
 
 }
 
-.z3-empty{
+.z3-skeleton{
 
-    color:#666;
+    background:#FFF;
 
-}
+    border-radius:18px;
 
-.z3-error{
+    overflow:hidden;
 
-    color:#D92D20;
+    box-shadow:var(--z3-shadow);
 
-    background:#FFF5F5;
-
-    border-color:#FECACA;
+    min-height:600px;
 
 }
 
-/* =====================================================
-   ANIMAÇÃO
-===================================================== */
+.z3-skeleton-image{
 
-.z3-card{
+    height:270px;
 
-    opacity:0;
+    background:linear-gradient(
+        90deg,
+        #efefef 25%,
+        #f7f7f7 50%,
+        #efefef 75%
+    );
 
-    animation:z3Fade .45s ease forwards;
+    background-size:300% 100%;
 
-}
-
-.z3-card:nth-child(2){
-
-    animation-delay:.05s;
-
-}
-
-.z3-card:nth-child(3){
-
-    animation-delay:.10s;
+    animation:z3Loading 1.4s infinite;
 
 }
 
-.z3-card:nth-child(4){
+.z3-skeleton-body{
 
-    animation-delay:.15s;
-
-}
-
-.z3-card:nth-child(5){
-
-    animation-delay:.20s;
+    padding:22px;
 
 }
 
-.z3-card:nth-child(6){
+.z3-line{
 
-    animation-delay:.25s;
+    height:15px;
+
+    border-radius:8px;
+
+    margin-bottom:16px;
+
+    background:linear-gradient(
+        90deg,
+        #efefef 25%,
+        #f7f7f7 50%,
+        #efefef 75%
+    );
+
+    background-size:300% 100%;
+
+    animation:z3Loading 1.4s infinite;
 
 }
 
-@keyframes z3Fade{
+.z3-line:nth-child(1){
+
+    width:90%;
+    height:22px;
+
+}
+
+.z3-line:nth-child(2){
+
+    width:60%;
+
+}
+
+.z3-line:nth-child(3){
+
+    width:100%;
+
+}
+
+.z3-line:nth-child(4){
+
+    width:80%;
+
+}
+
+@keyframes z3Loading{
 
     from{
 
-        opacity:0;
-
-        transform:translateY(25px);
+        background-position:100% 0;
 
     }
 
     to{
 
-        opacity:1;
-
-        transform:translateY(0);
+        background-position:-100% 0;
 
     }
 
 }
 
-/* =====================================================
-   HOVER
-===================================================== */
+/* ==========================================================
+   ERRO
+========================================================== */
 
-.z3-card:hover h3{
+.z3-error{
 
-    color:#CFA43A;
+    width:100%;
+
+    text-align:center;
+
+    padding:80px 30px;
+
+    border-radius:18px;
+
+    background:#fff8f8;
+
+    border:1px solid #ffd8d8;
+
+    color:#a30000;
+
+    font-size:18px;
+
+    font-weight:600;
 
 }
 
-.z3-card:hover .z3-icons span{
-
-    background:#FFFDF7;
-
-    border-color:#E9D6A0;
-
-}
-
-.z3-card:hover .z3-price{
-
-    color:#CFA43A;
-
-}
-
-/* =====================================================
+/* ==========================================================
    RESPONSIVO
-===================================================== */
+========================================================== */
 
-@media(max-width:980px){
+@media(max-width:1200px){
 
     #z3-imoveis{
 
-        grid-template-columns:repeat(2,1fr);
-
-        max-width:760px;
+        grid-template-columns:repeat(2,minmax(320px,1fr));
 
     }
 
@@ -501,122 +512,34 @@
 
         grid-template-columns:1fr;
 
-        max-width:100%;
-
-        gap:18px;
+        gap:22px;
 
         padding:0 15px;
 
-        margin:35px auto;
-
     }
 
-    .z3-info{
-
-        padding:18px;
-
-    }
-
-    .z3-info h3{
+    .z3-card{
 
         min-height:auto;
+
+    }
+
+    .z3-image{
+
+        height:240px;
+
+    }
+
+    .z3-title{
 
         font-size:20px;
 
     }
 
-    .z3-icons{
+    .z3-price strong{
 
-        grid-template-columns:repeat(2,1fr);
-
-    }
-
-    .z3-price{
-
-        font-size:26px;
+        font-size:28px;
 
     }
-
-}
-
-@media(max-width:480px){
-
-    #z3-imoveis{
-
-        padding:0 10px;
-
-    }
-
-    .z3-info{
-
-        padding:16px;
-
-    }
-
-    .z3-btn{
-
-        height:46px;
-
-        font-size:14px;
-
-    }
-
-}
-
-/* =====================================================
-   OTIMIZAÇÕES
-===================================================== */
-
-.z3-card,
-.z3-image img,
-.z3-btn,
-.z3-icons span{
-
-    will-change:transform;
-
-}
-
-.z3-card::before{
-
-    content:"";
-
-    position:absolute;
-
-    inset:0;
-
-    border-radius:16px;
-
-    pointer-events:none;
-
-    border:1px solid rgba(255,255,255,.35);
-
-}
-
-.z3-image img{
-
-    display:block;
-
-}
-
-.z3-card *{
-
-    word-break:break-word;
-
-}
-
-.z3-card{
-
-    min-height:100%;
-
-}
-.z3-info h3{
-
-    display:-webkit-box;
-    -webkit-line-clamp:2;
-    -webkit-box-orient:vertical;
-
-    overflow:hidden;
-
-    min-height:52px;
 
 }

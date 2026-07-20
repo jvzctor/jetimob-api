@@ -1,274 +1,371 @@
+/* ==========================================================
+   Z3 WIDGET IMÓVEIS V5
+   Desenvolvido para Nil Imóveis
+========================================================== */
+
 (async () => {
 
-    const API_URL = "https://jetimob-api-1.onrender.com";
+    const script = document.currentScript;
 
-    // Localiza o script em qualquer plataforma
-    const script =
-        document.currentScript ||
-        [...document.querySelectorAll('script[src*="widget.js"]')].pop();
+    const API = "https://jetimob-api-1.onrender.com/api/imoveis";
 
-    // Lê os atributos data-*
-    const dataset = script ? script.dataset : {};
+    /* ==========================
+       PARÂMETROS
+    ========================== */
 
-    const params = new URLSearchParams();
+    const filtros = {
 
-    [
-        "cidade",
-        "bairro",
-        "tipo",
-        "finalidade",
-        "dormitorios",
-        "banheiros",
-        "vagas",
-        "valorMin",
-        "valorMax",
-        "ordenar",
-        "limite"
-    ].forEach(chave => {
+        limite: script.dataset.limite || 6,
+        cidade: script.dataset.cidade || "",
+        bairro: script.dataset.bairro || "",
+        tipo: script.dataset.tipo || "",
+        finalidade: script.dataset.finalidade || "",
+        dormitorios: script.dataset.dormitorios || "",
+        banheiros: script.dataset.banheiros || "",
+        vagas: script.dataset.vagas || "",
+        valorMin: script.dataset.valormin || "",
+        valorMax: script.dataset.valormax || "",
+        ordenar: script.dataset.ordenar || ""
 
-        const valor = dataset[chave.toLowerCase()] || dataset[chave];
+    };
 
-        if (valor) {
+    /* ==========================
+       CONTAINER
+    ========================== */
 
-            params.append(chave, valor);
+    const container = document.createElement("section");
 
-        }
+    container.id = "z3-imoveis";
 
-    });
+    script.parentNode.insertBefore(
+        container,
+        script.nextSibling
+    );
 
-    let container = document.getElementById("z3-imoveis");
-
-    if (!container) {
-
-        container = document.createElement("section");
-        container.id = "z3-imoveis";
-
-        if (script?.parentNode) {
-
-            script.parentNode.insertBefore(container, script);
-
-        } else {
-
-            document.body.appendChild(container);
-
-        }
-
-    }
+    /* ==========================
+       SKELETON
+    ========================== */
 
     container.innerHTML = `
         <div class="z3-loading">
-            Carregando imóveis...
+
+            ${Array(6).fill("").map(() => `
+
+                <div class="z3-skeleton">
+
+                    <div class="z3-skeleton-image"></div>
+
+                    <div class="z3-skeleton-body">
+
+                        <div class="z3-line"></div>
+                        <div class="z3-line"></div>
+                        <div class="z3-line"></div>
+                        <div class="z3-line"></div>
+
+                    </div>
+
+                </div>
+
+            `).join("")}
+
         </div>
     `;
 
-    function moeda(valor) {
+    /* ==========================
+       URL
+    ========================== */
 
-        if (!Number(valor)) return "Sob consulta";
+    const params = new URLSearchParams();
 
-        return Number(valor).toLocaleString("pt-BR", {
+    Object.entries(filtros).forEach(([key, value]) => {
 
-            style: "currency",
-            currency: "BRL"
+        if (value !== "")
+            params.append(key, value);
 
-        });
+    });
 
-    }
-
-    function imagem(imovel){
-
-        if(imovel.imagem && imovel.imagem.length){
-
-            return imovel.imagem;
-
-        }
-
-        return "https://placehold.co/900x600/f5f5f5/999999?text=Sem+Imagem";
-
-    }
-
-    function badge(imovel){
-
-        const finalidade = imovel.finalidade || "Venda";
-
-        return {
-
-            texto: finalidade,
-
-            classe: finalidade.toLowerCase().includes("loc")
-
-                ? "z3-badge aluguel"
-
-                : "z3-badge venda"
-
-        };
-
-    }
-
-    function link(imovel){
-
-        return imovel.link || "#";
-
-    }
-
-    try{
+    try {
 
         const resposta = await fetch(
-
-            `${API_URL}/api/imoveis?${params.toString()}`
-
+            `${API}?${params.toString()}`
         );
 
-        if(!resposta.ok){
-
-            throw new Error("Erro ao carregar imóveis.");
-
-        }
+        if (!resposta.ok)
+            throw new Error("Erro na API");
 
         const imoveis = await resposta.json();
 
-        if(!imoveis.length){
+        renderizar(imoveis);
 
-            container.innerHTML = `
-                <div class="z3-empty">
+    }
+
+    catch (erro) {
+
+        console.error(erro);
+
+        container.innerHTML = `
+
+            <div class="z3-error">
+
+                Não foi possível carregar os imóveis.
+
+            </div>
+
+        `;
+
+    }
+
+    /* ==========================================================
+       RENDER
+    ========================================================== */
+
+    function renderizar(lista){
+
+        if(!lista.length){
+
+            container.innerHTML=`
+
+                <div class="z3-error">
+
                     Nenhum imóvel encontrado.
+
                 </div>
+
             `;
 
             return;
 
         }
 
-        let html = "";
+        container.innerHTML="";
 
-        imoveis.forEach(imovel=>{
+        lista.forEach(imovel=>{
 
-            const infoBadge = badge(imovel);
+            const card=document.createElement("a");
 
-            html += `
-                <a
-                    href="${link(imovel)}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="z3-card">
+            card.className="z3-card";
 
-                    <div class="z3-image">
+            card.target="_blank";
 
-                        <img
-                            src="${imagem(imovel)}"
-                            alt="${imovel.titulo || "Imóvel"}"
-                            loading="lazy">
+            card.rel="noopener";
 
-                        <span class="${infoBadge.classe}">
-                            ${infoBadge.texto}
-                        </span>
+            card.href=imovel.link || "#";
+
+            
+            /* ==========================
+               TAG
+            ========================== */
+
+            const tag =
+                imovel.finalidade ||
+                imovel.tipo ||
+                "Imóvel";
+
+            const imagem =
+                imovel.imagem && imovel.imagem.length
+                    ? imovel.imagem
+                    : "https://placehold.co/800x600?text=Sem+Imagem";
+
+            const valor = Number(imovel.valor || 0)
+                .toLocaleString("pt-BR",{
+                    minimumFractionDigits:0
+                });
+
+            card.innerHTML = `
+
+                <div class="z3-image">
+
+                    <span class="z3-tag">
+
+                        ${tag}
+
+                    </span>
+
+                    <img
+                        src="${imagem}"
+                        loading="lazy"
+                        alt="${imovel.titulo}"
+                    >
+
+                </div>
+
+                <div class="z3-info">
+
+                    <div class="z3-title">
+
+                        ${imovel.titulo || "Imóvel"}
 
                     </div>
 
-                    <div class="z3-info">
+                    <div class="z3-location">
 
-                        <h3>
+                        <svg viewBox="0 0 24 24">
 
-                            ${imovel.titulo || "Imóvel"}
+                            <path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/>
 
-                        </h3>
+                        </svg>
 
-                        <p class="z3-local">
+                        ${imovel.bairro || ""}
 
-                            ${imovel.bairro || ""}
+                        ${imovel.bairro && imovel.cidade ? " • " : ""}
 
-                            ${imovel.cidade ? "• "+imovel.cidade : ""}
+                        ${imovel.cidade || ""}
 
-                        </p>
+                    </div>
 
-                        <div class="z3-icons">
+                    <div class="z3-features">
 
-                                                    <span>
+                        <div class="z3-feature">
 
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                                    <path d="M3 11V7a2 2 0 012-2h14a2 2 0 012 2v9h-2v2h-2v-2H7v2H5v-2H3v-5zm2-2h14V7H5v2zm0 5h3v-2H5v2zm11 0h3v-2h-3v2z"/>
-                                </svg>
+                            <svg viewBox="0 0 24 24">
 
-                                <small>Dorm.</small>
+                                <path d="M3 10V5h18v14h-2v-3H5v3H3zm2 4h14v-4H5zm2-7h4v2H7zm6 0h4v2h-4z"/>
 
-                                <strong>${Number(imovel.dormitorios || 0)}</strong>
+                            </svg>
 
-                            </span>
+                            <strong>
 
-                            <span>
+                                ${imovel.dormitorios || 0}
 
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                                    <path d="M7 21V10h10v11h2V8H5v13h2zm2-9h6v7H9v-7z"/>
-                                </svg>
-
-                                <small>Banh.</small>
-
-                                <strong>${Number(imovel.banheiros || 0)}</strong>
-
-                            </span>
+                            </strong>
 
                             <span>
 
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                                    <path d="M5 11l1-4h12l1 4h1a2 2 0 012 2v5h-2v2h-2v-2H6v2H4v-2H2v-5a2 2 0 012-2h1zm2-2h10l-.5-2h-9L7 9zm1 6a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm8 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
-                                </svg>
-
-                                <small>Vagas</small>
-
-                                <strong>${Number(imovel.vagas || 0)}</strong>
-
-                            </span>
-
-                            <span>
-
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                                    <path d="M4 4h6v2H6v4H4V4zm10 0h6v6h-2V6h-4V4zM4 14h2v4h4v2H4v-6zm14 4v-4h2v6h-6v-2h4z"/>
-                                </svg>
-
-                                <small>Área</small>
-
-                                <strong>${Number(imovel.area || 0)} m²</strong>
+                                Quartos
 
                             </span>
 
                         </div>
 
-                        <strong class="z3-price">
+                        <div class="z3-feature">
 
-                            ${moeda(imovel.valor)}
+                            <svg viewBox="0 0 24 24">
 
-                        </strong>
+                                <path d="M7 21V12h10v9h2V3H5v18zm3-7h4v5h-4z"/>
 
-                        <button class="z3-btn">
+                            </svg>
 
-                            Ver detalhes
+                            <strong>
 
-                        </button>
+                                ${imovel.banheiros || 0}
+
+                            </strong>
+
+                            <span>
+
+                                Banheiros
+
+                            </span>
+
+                        </div>
+
+                        <div class="z3-feature">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path d="M5 11h14l1 4v4h-2v-2H6v2H4v-4zm2-4h10l2 3H5z"/>
+
+                            </svg>
+
+                            <strong>
+
+                                ${imovel.vagas || 0}
+
+                            </strong>
+
+                            <span>
+
+                                Vagas
+
+                            </span>
+
+                        </div>
+
+                        <div class="z3-feature">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path d="M4 4h7v2H6v5H4zm10 0h6v7h-2V6h-4zM4 13h2v5h5v2H4zm14 0h2v7h-7v-2h5z"/>
+
+                            </svg>
+
+                            <strong>
+
+                                ${imovel.area || "--"}
+
+                            </strong>
+
+                            <span>
+
+                                m²
+
+                            </span>
+
+                        </div>
 
                     </div>
 
-                </a>
+                    <div class="z3-price">
+
+                        <small>
+
+                            Valor do imóvel
+
+                        </small>
+
+                        <strong>
+
+                            R$ ${valor}
+
+                        </strong>
+
+                    </div>
+
+                    <button
+                        class="z3-btn"
+                        type="button">
+
+                        Ver detalhes
+
+                    </button>
+
+                </div>
 
             `;
 
+            container.appendChild(card);
+
         });
 
-        container.innerHTML = html;
+        
+        /* ==========================
+           ANIMAÇÃO DE ENTRADA
+        ========================== */
 
-    }catch(erro){
+        requestAnimationFrame(() => {
 
-        console.error("Erro ao carregar imóveis:", erro);
+            const cards =
+                container.querySelectorAll(".z3-card");
 
-        container.innerHTML = `
+            cards.forEach((card, index) => {
 
-            <div class="z3-error">
+                card.style.opacity = "0";
+                card.style.transform = "translateY(30px)";
 
-                <h3>Não foi possível carregar os imóveis.</h3>
+                setTimeout(() => {
 
-                <p>Tente atualizar a página novamente.</p>
+                    card.style.transition =
+                        "all .45s ease";
 
-            </div>
+                    card.style.opacity = "1";
+                    card.style.transform =
+                        "translateY(0)";
 
-        `;
+                }, index * 80);
+
+            });
+
+        });
 
     }
 
