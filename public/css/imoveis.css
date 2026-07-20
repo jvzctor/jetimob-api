@@ -2,7 +2,201 @@
    PORTAL IMOBILIÁRIO
    Z3 COMMERCE
 ========================================================== */
+.hero-nil{
 
+    background:#000;
+
+    color:#fff;
+
+    min-height:700px;
+
+    position:relative;
+
+}
+
+.hero-container{
+
+    max-width:1280px;
+
+    margin:auto;
+
+    padding:0 40px;
+
+}
+
+.topo{
+
+    height:120px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+}
+
+.logo-nil{
+
+    width:140px;
+
+}
+
+.topo nav{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:40px;
+
+}
+
+.topo nav a{
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.topo nav a:hover{
+
+    color:#c7a15d;
+
+}
+
+.btn-menu{
+
+    background:#c7a15d;
+
+    padding:14px 28px;
+
+    border-radius:30px;
+
+}
+
+.hero-texto{
+
+    max-width:720px;
+
+    padding-top:120px;
+
+}
+
+.hero-texto span{
+
+    color:#c7a15d;
+
+    letter-spacing:5px;
+
+    font-weight:700;
+
+}
+
+.hero-texto h1{
+
+    font-size:68px;
+
+    line-height:1.05;
+
+    margin:20px 0;
+
+}
+
+.hero-texto p{
+
+    font-size:20px;
+
+    line-height:1.8;
+
+    color:#cfcfcf;
+
+    margin-bottom:20px;
+
+}
+
+.btn-principal{
+
+    display:inline-block;
+
+    padding:20px 45px;
+
+    border-radius:40px;
+
+    background:#c7a15d;
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:bold;
+
+    transition:.3s;
+
+}
+
+.btn-principal:hover{
+
+    transform:translateY(-3px);
+
+}
+
+@media(max-width:900px){
+
+.topo{
+
+flex-direction:column;
+
+height:auto;
+
+padding-top:25px;
+
+gap:20px;
+
+}
+
+.topo nav{
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+gap:20px;
+
+}
+
+.hero-texto{
+
+text-align:center;
+
+padding:60px 10px;
+
+}
+
+.hero-texto h1{
+
+font-size:40px;
+
+}
+
+.hero-texto p{
+
+font-size:17px;
+
+}
+
+.logo-nil{
+
+width:110px;
+
+}
+
+}
 
 /* ==========================================================
    RESET
@@ -880,3 +1074,43 @@ Classes já preparadas para futuras implementações:
 .gallery
 
 */
+.footer{
+    background:#111;
+    color:#fff;
+    padding:60px 20px;
+    margin-top:80px;
+}
+
+.footer-container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.footer h3{
+    font-size:28px;
+    margin-bottom:25px;
+    color:#fff;
+}
+
+.footer p{
+    color:#d8d8d8;
+    line-height:1.8;
+    margin-bottom:18px;
+    font-size:16px;
+}
+
+.footer a{
+    color:#fff;
+    text-decoration:none;
+}
+
+.footer hr{
+    border:none;
+    border-top:1px solid rgba(255,255,255,.15);
+    margin:35px 0;
+}
+
+.footer .copyright{
+    color:#999;
+    font-size:14px;
+}
