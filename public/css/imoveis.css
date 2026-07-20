@@ -2,161 +2,49 @@
    PORTAL IMOBILIÁRIO
    Z3 COMMERCE
 ========================================================== */
-.hero-nil{
-
-    background:#000;
-
-    color:#fff;
-
-    min-height:700px;
-
-    position:relative;
-
+.header-nil{
+    background:#fff;
+    padding:18px 0;
+    border-bottom:1px solid #ececec;
 }
 
-.hero-container{
-
+.header-container{
     max-width:1280px;
-
     margin:auto;
-
-    padding:0 40px;
-
-}
-
-.topo{
-
-    height:120px;
-
+    padding:0 30px;
     display:flex;
-
-    align-items:center;
-
     justify-content:space-between;
-
+    align-items:center;
 }
 
 .logo-nil{
-
-    width:140px;
-
+    width:130px;
 }
 
-.topo nav{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:40px;
-
-}
-
-.topo nav a{
-
-    color:white;
-
-    text-decoration:none;
-
-    font-weight:600;
-
-    transition:.3s;
-
-}
-
-.topo nav a:hover{
-
-    color:#c7a15d;
-
-}
-
-.btn-menu{
-
+.btn-contato{
     background:#c7a15d;
-
+    color:#fff;
+    text-decoration:none;
     padding:14px 28px;
-
     border-radius:30px;
-
-}
-
-.hero-texto{
-
-    max-width:720px;
-
-    padding-top:120px;
-
-}
-
-.hero-texto span{
-
-    color:#c7a15d;
-
-    letter-spacing:5px;
-
-    font-weight:700;
-
-}
-
-.hero-texto h1{
-
-    font-size:68px;
-
-    line-height:1.05;
-
-    margin:20px 0;
-
-}
-
-.hero-texto p{
-
-    font-size:20px;
-
-    line-height:1.8;
-
-    color:#cfcfcf;
-
-    margin-bottom:20px;
-
-}
-
-.btn-principal{
-
-    display:inline-block;
-
-    padding:20px 45px;
-
-    border-radius:40px;
-
-    background:#c7a15d;
-
-    color:white;
-
-    text-decoration:none;
-
-    font-weight:bold;
-
+    font-weight:600;
     transition:.3s;
-
 }
 
-.btn-principal:hover{
-
-    transform:translateY(-3px);
-
+.btn-contato:hover{
+    background:#a88648;
 }
 
-@media(max-width:900px){
+@media(max-width:768px){
 
-.topo{
+.header-container{
+    flex-direction:column;
+    gap:20px;
+}
 
-flex-direction:column;
-
-height:auto;
-
-padding-top:25px;
-
-gap:20px;
+.logo-nil{
+    width:110px;
+}
 
 }
 
@@ -193,8 +81,6 @@ font-size:17px;
 .logo-nil{
 
 width:110px;
-
-}
 
 }
 
