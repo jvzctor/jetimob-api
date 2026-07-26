@@ -326,3 +326,8 @@
     opacity:1;
 
 }
+.foto-principal{
+
+    transition:opacity .2s ease;
+
+}
