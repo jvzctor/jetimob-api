@@ -619,6 +619,8 @@ function renderBotaoCarregarMais(){
 
 function criarCard(imovel){
 
+    console.log(imovel);
+
     const imagem = obterImagem(imovel);
 
     const titulo = imovel.titulo || imovel.nome || "Imóvel";
