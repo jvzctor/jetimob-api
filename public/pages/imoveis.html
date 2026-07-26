@@ -9,213 +9,309 @@
 
     <title>Imóveis | Nil Imóveis</title>
 
-     <meta
+    <meta
         name="description"
-        content="Encontre casas, apartamentos, terrenos e imóveis para venda e locação na Serra Gaúcha com a Nil Imóveis. Atendimento personalizado e as melhores oportunidades da região.">
+        content="Encontre casas, apartamentos, terrenos e imóveis para venda e locação na Serra Gaúcha com a Nil Imóveis.">
 
- <link
+    <link
         rel="icon"
         type="image/png"
         href="../img/favicon.png">
-        
+
     <link rel="stylesheet" href="../css/imoveis.css">
 
 </head>
 
 <body>
 
-    <!-- ===================================== -->
-    <!-- HERO -->
-    <!-- ===================================== -->
-
- <header class="header-nil">
+<header class="header-nil">
 
     <div class="header-container">
 
         <a href="https://nilimoveis.imb.br">
-            <img src="../img/logo-nil.png.png"
-                 alt="Nil Imóveis"
-                 class="logo-nil">
+
+            <img
+                src="../img/logo-nil.png.png"
+                alt="Nil Imóveis"
+                class="logo-nil">
+
         </a>
 
-        <a href="https://wa.me/5554997010512"
-           target="_blank"
-           class="btn-contato">
+        <a
+            href="https://wa.me/5554997010512"
+            target="_blank"
+            class="btn-contato">
+
             Contato
+
         </a>
 
     </div>
 
 </header>
 
+<main>
 
-    <!-- ===================================== -->
-    <!-- CONTAINER -->
-    <!-- ===================================== -->
+    <!-- ===================================================== -->
+    <!-- HERO DO FILTRO -->
+    <!-- ===================================================== -->
 
-    <main class="container-imoveis">
+    <section class="hero-busca">
 
+        <div class="container">
 
-        <!-- ===================================== -->
-        <!-- FILTROS -->
-        <!-- ===================================== -->
+            <div class="hero-texto">
 
-        <section id="filtros" class="filtros">
+                <h1>Encontre seu próximo imóvel</h1>
 
-
-            <div class="campo">
-
-                <input
-
-                    type="text"
-
-                    id="pesquisa"
-
-                    placeholder="Pesquisar por código, bairro, cidade ou imóvel">
+                <p>
+                    Venda e locação de imóveis em Caxias do Sul e região.
+                </p>
 
             </div>
 
+            <div class="card-filtro">
 
-            <div class="campo">
+                <div class="linha-filtro">
 
-                <select id="tipo">
+                    <div class="campo">
 
-                    <option value="">Todos os tipos</option>
+                        <label>Tipo</label>
 
-                </select>
+                        <select id="tipo">
+
+                            <option value="">Todos os tipos</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>Cidade</label>
+
+                        <select id="cidade">
+
+                            <option value="">Todas</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>Bairro</label>
+
+                        <select id="bairro">
+
+                            <option value="">Todos</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>Finalidade</label>
+
+                        <select id="finalidade">
+
+                            <option value="">Todas</option>
+
+                            <option value="Venda">Venda</option>
+
+                            <option value="Locação">Locação</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="linha-filtro">
+
+                    <div class="campo">
+
+                        <label>Valor mínimo</label>
+
+                        <input
+                            type="number"
+                            id="valorMin"
+                            placeholder="R$ 0">
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>Valor máximo</label>
+
+                        <input
+                            type="number"
+                            id="valorMax"
+                            placeholder="R$ 0">
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>Dormitórios</label>
+
+                        <select id="dormitorios">
+
+                            <option value="">Qualquer</option>
+
+                            <option value="1">1+</option>
+
+                            <option value="2">2+</option>
+
+                            <option value="3">3+</option>
+
+                            <option value="4">4+</option>
+
+                            <option value="5">5+</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>Código</label>
+
+                        <input
+                            type="text"
+                            id="pesquisa"
+                            placeholder="Ex.: 1548">
+
+                    </div>
+
+                </div>
+
+                <div class="acoes-filtro">
+
+                    <button
+                        id="btnLimpar"
+                        class="btn-limpar">
+
+                        Limpar
+
+                    </button>
+
+                    <button
+                        id="btnBuscar"
+                        class="btn-busca">
+
+                        🔍 Buscar imóveis
+
+                    </button>
+
+                </div>
 
             </div>
 
+        </div>
 
-            <div class="campo">
+    </section>
 
-                <select id="cidade">
+    <!-- ===================================================== -->
+    <!-- RESULTADOS -->
+    <!-- ===================================================== -->
 
-                    <option value="">Todas as cidades</option>
+    <section class="container-imoveis">
 
-                </select>
-
-            </div>
-
-
-            <div class="campo">
-
-                <select id="dormitorios">
-
-                    <option value="">Dormitórios</option>
-
-                    <option value="1">1+</option>
-
-                    <option value="2">2+</option>
-
-                    <option value="3">3+</option>
-
-                    <option value="4">4+</option>
-
-                    <option value="5">5+</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="campo">
-
-                <select id="ordenacao">
-
-                    <option value="">Ordenar</option>
-
-                    <option value="menor">Menor preço</option>
-
-                    <option value="maior">Maior preço</option>
-
-                    <option value="area">Maior área</option>
-
-                    <option value="recentes">Mais recentes</option>
-
-                </select>
-
-            </div>
-
-        </section>
-
-
-        <!-- ===================================== -->
-        <!-- CONTADOR -->
-        <!-- ===================================== -->
-
-        <div id="contador" class="contador">
+        <div
+            id="contador"
+            class="contador">
 
             Carregando imóveis...
 
         </div>
 
-
-        <!-- ===================================== -->
-        <!-- GRID -->
-        <!-- ===================================== -->
-
         <section
-
             id="lista-imoveis"
-
             class="grid-imoveis">
 
         </section>
 
-    </main>
-        <!-- ===================================== -->
+    </section>
+        <!-- ===================================================== -->
     <!-- RODAPÉ -->
-    <!-- ===================================== -->
+    <!-- ===================================================== -->
 
-   <footer class="footer">
-    <div class="footer-container">
+    <footer class="footer">
 
-        <h3>CONTATO</h3>
+        <div class="footer-container">
 
-        <p>
-            📍 R. Os Dezoito do Forte, 297 - Sala Térrea<br>
-            Nossa Senhora de Lourdes<br>
-            Caxias do Sul - RS, 95020-471
-        </p>
+            <h3>CONTATO</h3>
 
-        <p>
-            📞 <a href="tel:+5554997010512">(54) 99701-0512</a>
-        </p>
+            <p>
 
-        <p>
-            🕒 Segunda a Sexta • 08:00 às 18:18<br>
-            (fecha ao meio-dia)
-        </p>
+                📍 R. Os Dezoito do Forte, 297 - Sala Térrea
 
-        <hr>
+                <br>
 
-        <p class="copyright">
-            Copyright © Nil Imóveis – Todos os direitos reservados.
-        </p>
+                Nossa Senhora de Lourdes
 
-    </div>
-</footer>
+                <br>
 
+                Caxias do Sul - RS, 95020-471
 
+            </p>
 
-    <!-- ===================================== -->
-    <!-- LOADING -->
-    <!-- ===================================== -->
+            <p>
 
-    <div id="loading" class="loading" style="display:none;">
+                📞
 
-        <div class="spinner"></div>
+                <a href="tel:+5554997010512">
 
-    </div>
+                    (54) 99701-0512
 
+                </a>
 
+            </p>
 
-    <!-- ===================================== -->
-    <!-- JAVASCRIPT -->
-    <!-- ===================================== -->
+            <p>
 
-    <script src="../js/imoveis.js"></script>
+                🕒 Segunda a Sexta • 08:00 às 18:18
+
+                <br>
+
+                (fecha ao meio-dia)
+
+            </p>
+
+            <hr>
+
+            <p class="copyright">
+
+                Copyright © Nil Imóveis – Todos os direitos reservados.
+
+            </p>
+
+        </div>
+
+    </footer>
+
+</main>
+
+<!-- ===================================================== -->
+<!-- LOADING -->
+<!-- ===================================================== -->
+
+<div
+    id="loading"
+    class="loading"
+    style="display:none;">
+
+    <div class="spinner"></div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- JAVASCRIPT -->
+<!-- ===================================================== -->
+
+<script src="../js/imoveis.js"></script>
 
 </body>
 
