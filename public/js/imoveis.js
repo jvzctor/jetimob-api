@@ -528,11 +528,9 @@ function render(){
 
 document.querySelectorAll(".card-imovel").forEach(card => {
     card.onclick = () => {
-        alert(card.dataset.codigo);
+        abrirImovel(card.dataset.codigo);
     };
 });
-
-}
 
 
 
@@ -900,7 +898,7 @@ Pode me enviar mais informações?`;
 
 function abrirImovel(codigo){
 
-       window.open(
+    window.open(
         `https://imoveis.nilimoveis.imb.br/pages/imovel.html?codigo=${codigo}`,
         "_blank"
     );
