@@ -526,7 +526,14 @@ function render(){
 
     renderBotaoCarregarMais();
 
+document.querySelectorAll(".card-imovel").forEach(card => {
+    card.onclick = () => {
+        alert(card.dataset.codigo);
+    };
+});
+
 }
+
 
 
 
@@ -661,7 +668,7 @@ function criarCard(imovel){
 
     return `
 
-<div class="card-imovel" onclick="abrirImovel('${codigo}')">
+<div class="card-imovel" data-codigo="${codigo}">
 
     <div class="imagem-imovel">
 
@@ -894,7 +901,7 @@ Pode me enviar mais informações?`;
 function abrirImovel(codigo){
 
   console.log(todosImoveis.find(i => i.codigo == codigo));
-  
+
 }
 
 // ======================================================
