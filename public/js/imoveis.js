@@ -893,15 +893,12 @@ Pode me enviar mais informações?`;
 
 function abrirImovel(codigo){
 
-    window.open(
+    console.log("Código:", codigo);
 
-        `https://imoveis.nilimoveis.imb.br/imovel/${codigo}`,
-
-        "_blank"
-
-    );
+    alert(`Código: ${codigo}`);
 
 }
+
 // ======================================================
 // EVENTOS
 // ======================================================
