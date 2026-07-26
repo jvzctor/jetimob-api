@@ -893,10 +893,8 @@ Pode me enviar mais informações?`;
 
 function abrirImovel(codigo){
 
-    console.log("Código:", codigo);
-
-    alert(`Código: ${codigo}`);
-
+  console.log(todosImoveis.find(i => i.codigo == codigo));
+  
 }
 
 // ======================================================
