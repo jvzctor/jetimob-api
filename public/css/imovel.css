@@ -1,0 +1,328 @@
+/* =========================================================
+   PÁGINA DO IMÓVEL
+=========================================================*/
+
+.pagina-imovel{
+
+    max-width:1200px;
+
+    margin:40px auto;
+
+    padding:0 20px;
+
+}
+
+#galeria{
+
+    margin-bottom:40px;
+
+}
+
+.foto-principal{
+
+    width:100%;
+
+    height:550px;
+
+    object-fit:cover;
+
+    border-radius:12px;
+
+    display:block;
+
+}
+
+.miniaturas{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:15px;
+
+    overflow-x:auto;
+
+    padding-bottom:5px;
+
+}
+
+.miniaturas img{
+
+    width:120px;
+
+    height:80px;
+
+    object-fit:cover;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    border:2px solid transparent;
+
+    transition:.25s;
+
+    flex-shrink:0;
+
+}
+
+.miniaturas img:hover{
+
+    border-color:#6c2bd9;
+
+    transform:translateY(-2px);
+
+}
+
+.conteudo-imovel{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:35px;
+
+}
+
+.informacoes h1{
+
+    font-size:34px;
+
+    margin-bottom:10px;
+
+    color:#222;
+
+}
+
+#endereco{
+
+    color:#666;
+
+    font-size:17px;
+
+    margin-bottom:25px;
+
+}
+
+#valor{
+
+    font-size:38px;
+
+    font-weight:700;
+
+    color:#6c2bd9;
+
+    margin-bottom:30px;
+
+}
+
+#caracteristicas{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:15px;
+
+}
+
+#caracteristicas .item{
+
+    background:#fff;
+
+    border:1px solid #ececec;
+
+    border-radius:10px;
+
+    padding:18px;
+
+    text-align:center;
+
+    font-weight:600;
+
+    transition:.2s;
+
+}
+
+#caracteristicas .item:hover{
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.descricao{
+
+    background:#fff;
+
+    border-radius:12px;
+
+    padding:30px;
+
+    border:1px solid #ececec;
+
+}
+
+.descricao h2{
+
+    margin-bottom:20px;
+
+    color:#222;
+
+}
+
+.descricao p{
+
+    line-height:1.8;
+
+    color:#555;
+
+    white-space:pre-line;
+
+}
+
+.whatsapp-fixo{
+
+    position:fixed;
+
+    right:25px;
+
+    bottom:25px;
+
+    background:#25D366;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    padding:16px 24px;
+
+    border-radius:10px;
+
+    font-weight:700;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+
+    transition:.25s;
+
+    z-index:999;
+
+}
+
+.whatsapp-fixo:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.erro-imovel{
+
+    text-align:center;
+
+    padding:80px 20px;
+
+}
+
+.erro-imovel h2{
+
+    margin-bottom:15px;
+
+}
+
+@media(max-width:900px){
+
+    .foto-principal{
+
+        height:350px;
+
+    }
+
+    #caracteristicas{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    #valor{
+
+        font-size:30px;
+
+    }
+
+    .informacoes h1{
+
+        font-size:28px;
+
+    }
+
+}
+
+@media(max-width:600px){
+
+    .pagina-imovel{
+
+        margin:20px auto;
+
+    }
+
+    .foto-principal{
+
+        height:250px;
+
+    }
+
+    .miniaturas img{
+
+        width:90px;
+
+        height:65px;
+
+    }
+
+    #caracteristicas{
+
+        grid-template-columns:1fr 1fr;
+
+        gap:10px;
+
+    }
+
+    .descricao{
+
+        padding:20px;
+
+    }
+
+    .whatsapp-fixo{
+
+        left:15px;
+
+        right:15px;
+
+        bottom:15px;
+
+        text-align:center;
+
+    }
+
+}
+.miniatura.ativa{
+
+    border:2px solid #6c2bd9;
+
+    opacity:1;
+
+}
+
+.miniatura{
+
+    opacity:.7;
+
+    transition:.2s;
+
+}
+
+.miniatura:hover{
+
+    opacity:1;
+
+}

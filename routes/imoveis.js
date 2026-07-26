@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const { listarImoveis } = require("../services/jetimob");
+const {
+    listarImoveis,
+    buscarImovel
+} = require("../services/jetimob");
 
 router.get("/", async (req, res) => {
 
@@ -31,6 +34,32 @@ router.get("/", async (req, res) => {
 
         res.status(500).json({
             erro: "Erro ao buscar imóveis."
+        });
+
+    }
+
+});
+
+router.get("/:codigo", async (req, res) => {
+
+    try {
+
+        const imovel = await buscarImovel(req.params.codigo);
+
+        if (!imovel) {
+            return res.status(404).json({
+                erro: "Imóvel não encontrado."
+            });
+        }
+
+        res.json(imovel);
+
+    } catch (erro) {
+
+        console.error(erro);
+
+        res.status(500).json({
+            erro: "Erro ao buscar imóvel."
         });
 
     }

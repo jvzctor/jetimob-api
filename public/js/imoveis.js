@@ -307,91 +307,45 @@ function criarCard(imovel) {
 
     const imagem = obterImagem(imovel);
 
-    const titulo =
+    const titulo = imovel.titulo || "Imóvel";
 
-        imovel.titulo ||
+    const cidade = imovel.cidade || "";
 
-        imovel.nome ||
+    const bairro = imovel.bairro || "";
 
-        "Imóvel";
+    const dormitorios = imovel.dormitorios || 0;
 
-    const cidade =
+    const banheiros = imovel.banheiros || 0;
 
-        imovel.cidade ||
+    const vagas = imovel.vagas || 0;
 
-        "";
+    const area = imovel.area || 0;
 
-    const bairro =
-
-        imovel.bairro ||
-
-        "";
-
-    const dormitorios =
-
-        imovel.dormitorios ||
-
-        imovel.quartos ||
-
-        0;
-
-    const banheiros =
-
-        imovel.banheiros ||
-
-        0;
-
-    const vagas =
-
-        imovel.vagas ||
-
-        imovel.garagens ||
-
-        0;
-
-    const area =
-
-        imovel.area ||
-
-        0;
-
-    const valor = formatarValor(
-
-        imovel.valor ||
-
-        0
-
-    );
+    const valor = formatarValor(imovel.valor || 0);
 
     return `
 
-<div class="card-imovel">
+<div
+    class="card-imovel"
+    onclick="abrirImovel('${imovel.codigo}')">
 
     <div class="imagem">
 
         <img
-
             src="${imagem}"
-
             loading="lazy"
-
             alt="${titulo}"
-
             onerror="this.src='https://placehold.co/800x600?text=Sem+Imagem'">
 
     </div>
 
     <div class="conteudo">
 
-        <h3>
-
-            ${titulo}
-
-        </h3>
+        <h3>${titulo}</h3>
 
         <p class="endereco">
 
-            ${bairro} ${cidade ? "- " + cidade : ""}
+            ${bairro}${cidade ? " - " + cidade : ""}
 
         </p>
 
@@ -414,12 +368,10 @@ function criarCard(imovel) {
         </div>
 
         <a
-
             class="botao-whatsapp"
-
             target="_blank"
-
-            href="${linkWhatsApp(imovel)}">
+            href="${linkWhatsApp(imovel)}"
+            onclick="event.stopPropagation();">
 
             Tenho interesse
 
@@ -432,8 +384,6 @@ function criarCard(imovel) {
 `;
 
 }
-
-
 
 // ======================================================
 // UTILS
@@ -484,6 +434,12 @@ function linkWhatsApp(imovel) {
 `Olá! Tenho interesse no imóvel ${imovel.codigo || ""} ${imovel.titulo || ""}.`
 
     )}`;
+
+}
+
+function abrirImovel(codigo){
+
+    window.location.href = `/pages/imovel.html?codigo=${codigo}`;
 
 }
 // ======================================================

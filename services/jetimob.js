@@ -9,22 +9,58 @@ async function listarImoveis(filtros = {}) {
     const resposta = await api.get("/imoveis/todos?v=6&page=1&pageSize=100");
 
     let imoveis = resposta.data.data.map(imovel => ({
-        codigo: imovel.codigo,
-        titulo: imovel.titulo_anuncio,
-        cidade: imovel.endereco_cidade,
-        bairro: imovel.endereco_bairro,
-        valor: imovel.valor_venda,
-        imagem: imovel.imagens?.length
+    codigo: imovel.codigo,
+
+    titulo: imovel.titulo_anuncio,
+
+    descricao: imovel.descricao || "",
+
+    cidade: imovel.endereco_cidade,
+
+    bairro: imovel.endereco_bairro,
+
+    endereco: imovel.endereco || "",
+
+    valor: imovel.valor_venda,
+
+    valorLocacao: imovel.valor_locacao,
+
+    dormitorios: imovel.dormitorios,
+
+    suites: imovel.suites,
+
+    banheiros: imovel.banheiros,
+
+    vagas: imovel.vagas,
+
+    area: imovel.area_privativa,
+
+    areaTotal: imovel.area_total,
+
+    tipo: imovel.tipo,
+
+    finalidade: imovel.finalidade,
+
+    condominio: imovel.valor_condominio,
+
+    iptu: imovel.valor_iptu,
+
+    caracteristicas: imovel.caracteristicas || [],
+
+    latitude: imovel.latitude,
+
+    longitude: imovel.longitude,
+
+    link: imovel.link,
+
+    imagem:
+        imovel.imagens?.length
             ? imovel.imagens[0].link
             : "",
-        dormitorios: imovel.dormitorios,
-        banheiros: imovel.banheiros,
-        vagas: imovel.vagas,
-        area: imovel.area_privativa,
-        tipo: imovel.tipo,
-        finalidade: imovel.finalidade,
-        link: imovel.link
-    }));
+
+    imagens:
+        imovel.imagens?.map(img => img.link) || []
+}));
 
     // Cidade
     if (filtros.cidade) {
@@ -112,6 +148,15 @@ async function listarImoveis(filtros = {}) {
 
 }
 
+async function buscarImovel(codigo) {
+
+    const imoveis = await listarImoveis();
+
+    return imoveis.find(i => i.codigo == codigo);
+
+}
+
 module.exports = {
-    listarImoveis
+    listarImoveis,
+    buscarImovel
 };
