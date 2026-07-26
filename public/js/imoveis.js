@@ -176,48 +176,39 @@ async function carregarImoveis(){
 function atualizarFiltros(){
 
     preencherSelect(
-
         filtroTipo,
-
         "Todos os tipos",
-
-        [...new Set(
-
-            todosImoveis
-
-                .map(i => i.tipo)
-
-                .filter(Boolean)
-
-        )]
-
+        [
+            "Apartamentos",
+            "Apartamentos em Construção",
+            "Casas",
+            "Sobrados",
+            "Terrenos"
+        ]
     );
-
-
 
     preencherSelect(
-
         filtroCidade,
-
         "Todas as cidades",
-
         [...new Set(
-
             todosImoveis
-
                 .map(i => i.cidade)
-
                 .filter(Boolean)
-
         )]
-
     );
 
-
-
-    preencherFinalidades();
-
     atualizarBairros();
+
+    if(filtroFinalidade){
+
+        filtroFinalidade.innerHTML =
+            `<option value="Venda">Venda</option>`;
+
+        filtroFinalidade.value = "Venda";
+
+        filtroFinalidade.disabled = true;
+
+    }
 
 }
 
@@ -348,6 +339,29 @@ function preencherSelect(
             .join("");
 
 }
+
+function obterCategoria(imovel){
+
+    const texto = `${imovel.titulo || ""} ${imovel.tipo || ""}`.toLowerCase();
+
+    if(texto.includes("apartamento em construção"))
+        return "Apartamentos em Construção";
+
+    if(texto.includes("apartamento"))
+        return "Apartamentos";
+
+    if(texto.includes("sobrado"))
+        return "Sobrados";
+
+    if(texto.includes("casa"))
+        return "Casas";
+
+    if(texto.includes("terreno"))
+        return "Terrenos";
+
+    return "";
+
+}
 // ======================================================
 // FILTRAR IMÓVEIS
 // ======================================================
@@ -366,8 +380,8 @@ function aplicarFiltros(){
 
         const cidade = String(imovel.cidade || "").toLowerCase();
 
-        const tipo = imovel.tipo || "";
-
+        const tipo = obterCategoria(imovel);
+        
         const finalidade =
             imovel.finalidade ||
             imovel.negocio ||
