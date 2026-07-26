@@ -199,16 +199,6 @@ function atualizarFiltros(){
 
     atualizarBairros();
 
-    if(filtroFinalidade){
-
-        filtroFinalidade.innerHTML =
-            `<option value="Venda">Venda</option>`;
-
-        filtroFinalidade.value = "";
-
-        filtroFinalidade.disabled = true;
-
-    }
 
 }
 
@@ -342,25 +332,32 @@ function preencherSelect(
 
 function obterCategoria(imovel){
 
-    const texto = `${imovel.titulo || ""} ${imovel.tipo || ""}`.toLowerCase();
+    const texto = `${imovel.tipo || ""} ${imovel.titulo || ""}`.toLowerCase();
 
-    if(texto.includes("apartamento em construção"))
+    if(texto.includes("apartamento") && (
+        texto.includes("constru") ||
+        texto.includes("planta")
+    )){
         return "Apartamentos em Construção";
+    }
 
-    if(texto.includes("apartamento"))
+    if(texto.includes("apartamento")){
         return "Apartamentos";
+    }
 
-    if(texto.includes("sobrado"))
+    if(texto.includes("sobrado")){
         return "Sobrados";
+    }
 
-    if(texto.includes("casa"))
+    if(texto.includes("casa")){
         return "Casas";
+    }
 
-    if(texto.includes("terreno"))
+    if(texto.includes("terreno")){
         return "Terrenos";
+    }
 
     return "";
-
 }
 // ======================================================
 // FILTRAR IMÓVEIS
@@ -380,7 +377,7 @@ function aplicarFiltros(){
 
         const cidade = String(imovel.cidade || "").toLowerCase();
 
-        const tipo = imovel.tipo || "";
+        const tipo = obterCategoria(imovel);
 
         const finalidade =
             imovel.finalidade ||
@@ -433,18 +430,6 @@ function aplicarFiltros(){
         }
 
         if(filtroBairro.value && bairro !== filtroBairro.value.toLowerCase()){
-
-            return false;
-
-        }
-
-        if(
-
-            filtroFinalidade.value &&
-
-            finalidade !== filtroFinalidade.value
-
-        ){
 
             return false;
 
@@ -942,8 +927,6 @@ function registrarEventos(){
     });
 
     filtroBairro?.addEventListener("change", aplicarFiltros);
-
-    filtroFinalidade?.addEventListener("change", aplicarFiltros);
 
     filtroDormitorios?.addEventListener("change", aplicarFiltros);
 
