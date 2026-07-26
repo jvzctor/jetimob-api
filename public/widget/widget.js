@@ -13,7 +13,10 @@ const WHATSAPP =
 "5554997010512";
 
 const LIMITE =
-6;
+3;
+
+const PORTAL =
+"https://imoveis.nilimoveis.imb.br/pages/imovel.html?codigo=";
 
 const container =
 document.getElementById("z3-imoveis");
@@ -273,7 +276,7 @@ function render(lista){
         card.rel="noopener";
 
         card.href=
-`https://wa.me/${WHATSAPP}?text=${mensagem(item)}`;
+`${PORTAL}${item.codigo}`;
 
         card.style.transitionDelay=
 `${index*80}ms`;
@@ -372,9 +375,26 @@ ${bairro}${cidade ? " - "+cidade : ""}
 
 </div>
 
-<div class="z3-btn">
+<div class="z3-actions">
 
-    💬 Falar com um corretor
+    <a
+        class="z3-btn-ver"
+        href="${PORTAL}${item.codigo}"
+        target="_blank">
+
+        Ver imóvel
+
+    </a>
+
+    <a
+        class="z3-btn-whatsapp"
+        href="https://wa.me/${WHATSAPP}?text=${mensagem(item)}"
+        target="_blank"
+        onclick="event.stopPropagation();">
+
+        WhatsApp
+
+    </a>
 
 </div>
 
