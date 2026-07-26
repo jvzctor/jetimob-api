@@ -1,22 +1,182 @@
-/* =========================================================
-   HERO BUSCA
-========================================================= */
+/* ===========================================================
+   PORTAL NIL IMÓVEIS
+   Desenvolvido por Z3 Commerce
+=========================================================== */
 
-.hero-busca{
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-    background:#f8f9fb;
+:root{
 
-    padding:50px 20px;
+    --cor-primaria:#f97316;
+    --cor-primaria-hover:#ea580c;
 
-    border-bottom:1px solid #ececec;
+    --cor-texto:#1f2937;
+    --cor-texto-claro:#6b7280;
+
+    --cor-fundo:#f5f7fa;
+    --cor-card:#ffffff;
+
+    --cor-borda:#e5e7eb;
+
+    --sombra-card:0 12px 35px rgba(0,0,0,.08);
+    --sombra-hover:0 22px 45px rgba(0,0,0,.15);
+
+    --raio:18px;
+
+    --largura:1280px;
 
 }
 
-.container{
+html{
 
-    max-width:1280px;
+    scroll-behavior:smooth;
 
-    margin:0 auto;
+}
+
+body{
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background:var(--cor-fundo);
+
+    color:var(--cor-texto);
+
+    line-height:1.5;
+
+}
+
+img{
+
+    display:block;
+
+    max-width:100%;
+
+}
+
+a{
+
+    text-decoration:none;
+
+    color:inherit;
+
+}
+
+button{
+
+    font-family:inherit;
+
+}
+
+input,
+select{
+
+    font-family:inherit;
+
+    outline:none;
+
+}
+/* ===========================================================
+HEADER
+=========================================================== */
+
+.header-nil{
+
+    position:sticky;
+
+    top:0;
+
+    left:0;
+
+    right:0;
+
+    z-index:999;
+
+    background:#fff;
+
+    border-bottom:1px solid var(--cor-borda);
+
+    backdrop-filter:blur(12px);
+
+    box-shadow:0 2px 12px rgba(0,0,0,.05);
+
+}
+
+.header-container{
+
+    max-width:var(--largura);
+
+    margin:auto;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:18px 24px;
+
+}
+
+.logo-nil{
+
+    height:62px;
+
+    width:auto;
+
+}
+
+.btn-contato{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:14px 26px;
+
+    border-radius:12px;
+
+    background:var(--cor-primaria);
+
+    color:#fff;
+
+    font-weight:700;
+
+    transition:.25s;
+
+}
+
+.btn-contato:hover{
+
+    background:var(--cor-primaria-hover);
+
+    transform:translateY(-2px);
+
+}
+/* ===========================================================
+HERO
+=========================================================== */
+
+.hero-busca{
+
+    padding:55px 24px 40px;
+
+}
+
+.hero-container{
+
+    max-width:var(--largura);
+
+    margin:auto;
 
 }
 
@@ -30,35 +190,38 @@
 
 .hero-texto h1{
 
-    font-size:42px;
+    font-size:48px;
 
-    color:#222;
+    font-weight:800;
 
-    margin-bottom:10px;
+    color:var(--cor-texto);
 
-    font-weight:700;
+    margin-bottom:14px;
 
 }
 
 .hero-texto p{
 
-    color:#666;
-
     font-size:18px;
 
+    color:var(--cor-texto-claro);
+
 }
+/* ===========================================================
+FILTRO
+=========================================================== */
 
 .card-filtro{
 
     background:#fff;
 
-    border-radius:18px;
+    border-radius:22px;
 
     padding:30px;
 
-    box-shadow:0 10px 35px rgba(0,0,0,.08);
+    box-shadow:var(--sombra-card);
 
-    border:1px solid #ececec;
+    border:1px solid var(--cor-borda);
 
 }
 
@@ -74,7 +237,7 @@
 
 }
 
-.campo{
+.filtro-item{
 
     display:flex;
 
@@ -82,11 +245,11 @@
 
 }
 
-.campo label{
+.filtro-item label{
 
-    font-size:14px;
+    font-size:13px;
 
-    font-weight:600;
+    font-weight:700;
 
     color:#555;
 
@@ -94,38 +257,36 @@
 
 }
 
-.campo input,
-.campo select{
+.filtro-item input,
+.filtro-item select{
 
-    height:52px;
+    height:54px;
 
-    border:1px solid #ddd;
+    border:1px solid #d8d8d8;
 
-    border-radius:10px;
+    border-radius:12px;
 
-    padding:0 15px;
+    padding:0 16px;
 
     font-size:15px;
 
-    transition:.2s;
+    transition:.25s;
 
     background:#fff;
 
 }
 
-.campo input:focus,
-.campo select:focus{
+.filtro-item input:focus,
+.filtro-item select:focus{
 
-    outline:none;
-
-    border-color:#f97316;
+    border-color:var(--cor-primaria);
 
     box-shadow:0 0 0 4px rgba(249,115,22,.12);
 
 }
-/* =========================================================
-   AÇÕES DO FILTRO
-========================================================= */
+/* ===========================================================
+BOTÕES DO FILTRO
+=========================================================== */
 
 .acoes-filtro{
 
@@ -135,7 +296,7 @@
 
     align-items:center;
 
-    gap:15px;
+    gap:16px;
 
     margin-top:10px;
 
@@ -143,81 +304,404 @@
 
 .btn-limpar{
 
-    height:50px;
+    height:54px;
 
-    padding:0 24px;
+    padding:0 28px;
 
-    border:none;
+    border:1px solid var(--cor-borda);
 
-    border-radius:10px;
+    background:#fff;
 
-    background:#f3f4f6;
-
-    color:#444;
-
-    font-weight:600;
+    border-radius:12px;
 
     cursor:pointer;
 
-    transition:.2s;
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.25s;
 
 }
 
 .btn-limpar:hover{
 
-    background:#e5e7eb;
+    background:#f4f4f4;
+
+    border-color:#d1d5db;
 
 }
 
 .btn-busca{
 
-    height:50px;
+    height:54px;
 
-    padding:0 30px;
+    padding:0 34px;
 
     border:none;
 
-    border-radius:10px;
+    border-radius:12px;
 
-    background:#f97316;
+    background:var(--cor-primaria);
 
     color:#fff;
+
+    cursor:pointer;
 
     font-size:15px;
 
     font-weight:700;
 
-    cursor:pointer;
-
     transition:.25s;
-
-    box-shadow:0 8px 20px rgba(249,115,22,.25);
 
 }
 
 .btn-busca:hover{
 
-    background:#ea580c;
+    background:var(--cor-primaria-hover);
 
     transform:translateY(-2px);
 
+    box-shadow:0 10px 25px rgba(249,115,22,.25);
+
 }
 
-/* =========================================================
-   LISTAGEM
-========================================================= */
+
+
+/* ===========================================================
+ÁREA DOS IMÓVEIS
+=========================================================== */
 
 .container-imoveis{
 
-    max-width:1280px;
+    max-width:var(--largura);
 
-    margin:50px auto;
+    margin:auto;
 
-    padding:0 20px;
+    padding:0 24px 80px;
 
 }
 
+
+
+/* ===========================================================
+CONTADOR
+=========================================================== */
+
 .contador{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:28px;
+
+    padding:18px 24px;
+
+    background:#fff;
+
+    border-radius:16px;
+
+    border:1px solid var(--cor-borda);
+
+    box-shadow:0 6px 18px rgba(0,0,0,.04);
+
+    font-size:16px;
+
+    color:#555;
+
+}
+
+.contador strong{
+
+    color:var(--cor-primaria);
+
+}
+
+
+
+/* ===========================================================
+GRID
+=========================================================== */
+
+.grid-imoveis{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(350px,1fr));
+
+    gap:28px;
+
+}
+
+
+
+/* ===========================================================
+CARD
+=========================================================== */
+
+.card-imovel{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    cursor:pointer;
+
+    border:1px solid var(--cor-borda);
+
+    transition:.30s;
+
+    box-shadow:var(--sombra-card);
+
+}
+
+.card-imovel:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:var(--sombra-hover);
+
+}
+
+
+
+/* ===========================================================
+IMAGEM
+=========================================================== */
+
+.imagem-imovel{
+
+    position:relative;
+
+    aspect-ratio:16/10;
+
+    overflow:hidden;
+
+    background:#efefef;
+
+}
+
+.imagem-imovel img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    transition:.45s;
+
+}
+
+.card-imovel:hover .imagem-imovel img{
+
+    transform:scale(1.08);
+
+}
+
+
+
+/* ===========================================================
+BADGE
+=========================================================== */
+
+.badge-finalidade{
+
+    position:absolute;
+
+    top:18px;
+
+    left:18px;
+
+    background:var(--cor-primaria);
+
+    color:#fff;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    padding:8px 16px;
+
+    border-radius:40px;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.15);
+
+}
+
+
+
+/* ===========================================================
+CONTEÚDO
+=========================================================== */
+
+.conteudo-imovel{
+
+    padding:22px;
+
+}
+/* ===========================================================
+TOPO DO CARD
+=========================================================== */
+
+.topo-card{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:14px;
+
+}
+
+.tipo-imovel{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    background:#fff7ed;
+
+    color:var(--cor-primaria);
+
+    font-size:12px;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
+}
+
+.codigo{
+
+    font-size:13px;
+
+    color:#9ca3af;
+
+    font-weight:600;
+
+}
+
+
+
+/* ===========================================================
+TÍTULO
+=========================================================== */
+
+.titulo-imovel{
+
+    font-size:24px;
+
+    font-weight:700;
+
+    color:var(--cor-texto);
+
+    line-height:1.3;
+
+    margin-bottom:10px;
+
+}
+
+
+
+/* ===========================================================
+ENDEREÇO
+=========================================================== */
+
+.endereco{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-size:15px;
+
+    color:var(--cor-texto-claro);
+
+    margin-bottom:22px;
+
+}
+
+
+
+/* ===========================================================
+ATRIBUTOS
+=========================================================== */
+
+.infos-imovel{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:12px;
+
+    margin-bottom:24px;
+
+}
+
+.infos-imovel span{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:14px 8px;
+
+    background:#fafafa;
+
+    border:1px solid #ececec;
+
+    border-radius:12px;
+
+    transition:.25s;
+
+}
+
+.card-imovel:hover .infos-imovel span{
+
+    background:#fff;
+
+    border-color:#ddd;
+
+}
+
+.infos-imovel strong{
+
+    margin-top:8px;
+
+    font-size:15px;
+
+    color:#222;
+
+}
+
+
+
+/* ===========================================================
+RODAPÉ
+=========================================================== */
+
+.rodape-card{
 
     display:flex;
 
@@ -225,85 +709,335 @@
 
     align-items:center;
 
-    margin-bottom:30px;
+    gap:20px;
 
-    font-size:17px;
+    padding-top:20px;
 
-    font-weight:600;
-
-    color:#444;
+    border-top:1px solid #ececec;
 
 }
 
-.grid-imoveis{
 
-    display:grid;
 
-    grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+/* ===========================================================
+PREÇO
+=========================================================== */
 
-    gap:30px;
+.texto-preco{
+
+    display:block;
+
+    font-size:12px;
+
+    text-transform:uppercase;
+
+    color:#9ca3af;
+
+    margin-bottom:6px;
+
+    letter-spacing:.5px;
 
 }
 
-/* =========================================================
-   TRANSIÇÕES
-========================================================= */
+.valor{
 
-input,
-select,
-button{
+    font-size:31px;
 
-    font-family:inherit;
+    font-weight:800;
+
+    color:var(--cor-primaria);
+
+    line-height:1.1;
 
 }
 
-button{
+
+
+/* ===========================================================
+BOTÃO WHATSAPP
+=========================================================== */
+
+.botao-whatsapp{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:170px;
+
+    height:52px;
+
+    padding:0 24px;
+
+    border-radius:12px;
+
+    background:#25D366;
+
+    color:#fff;
+
+    font-size:14px;
+
+    font-weight:700;
 
     transition:.25s;
 
 }
 
-input:hover,
-select:hover{
+.botao-whatsapp:hover{
 
-    border-color:#bbb;
+    background:#1fb95a;
 
-}
+    transform:translateY(-2px);
 
-/* =========================================================
-   ANIMAÇÃO
-========================================================= */
-
-.card-filtro{
-
-    animation:fadeFiltro .35s ease;
+    box-shadow:0 12px 24px rgba(37,211,102,.25);
 
 }
 
-@keyframes fadeFiltro{
 
-    from{
 
-        opacity:0;
+/* ===========================================================
+CARD VAZIO
+=========================================================== */
 
-        transform:translateY(15px);
+.sem-imoveis{
 
-    }
+    grid-column:1/-1;
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:70px 40px;
+
+    text-align:center;
+
+    border:1px solid var(--cor-borda);
+
+    box-shadow:var(--sombra-card);
+
+}
+
+.sem-imoveis h2{
+
+    font-size:30px;
+
+    color:#222;
+
+    margin-bottom:12px;
+
+}
+
+.sem-imoveis p{
+
+    color:#777;
+
+    font-size:16px;
+
+}
+/* ===========================================================
+CARREGAR MAIS
+=========================================================== */
+
+.carregar-mais{
+
+    grid-column:1/-1;
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-top:20px;
+
+}
+
+#btnCarregarMais{
+
+    height:56px;
+
+    padding:0 40px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:var(--cor-primaria);
+
+    color:#fff;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.30s;
+
+    box-shadow:0 12px 25px rgba(249,115,22,.18);
+
+}
+
+#btnCarregarMais:hover{
+
+    background:var(--cor-primaria-hover);
+
+    transform:translateY(-3px);
+
+    box-shadow:0 18px 35px rgba(249,115,22,.30);
+
+}
+
+
+
+/* ===========================================================
+LOADING
+=========================================================== */
+
+.loading{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:rgba(255,255,255,.82);
+
+    backdrop-filter:blur(5px);
+
+    z-index:99999;
+
+}
+
+.spinner{
+
+    width:62px;
+
+    height:62px;
+
+    border-radius:50%;
+
+    border:6px solid #ececec;
+
+    border-top:6px solid var(--cor-primaria);
+
+    animation:spinner .7s linear infinite;
+
+}
+
+@keyframes spinner{
 
     to{
 
-        opacity:1;
-
-        transform:translateY(0);
+        transform:rotate(360deg);
 
     }
 
 }
-/* =========================================================
-   RESPONSIVO
-========================================================= */
 
-@media(max-width:1100px){
+
+
+/* ===========================================================
+FOOTER
+=========================================================== */
+
+.footer{
+
+    background:#111827;
+
+    color:#fff;
+
+    margin-top:90px;
+
+}
+
+.footer-container{
+
+    max-width:var(--largura);
+
+    margin:auto;
+
+    padding:60px 24px;
+
+}
+
+.footer h3{
+
+    font-size:24px;
+
+    margin-bottom:24px;
+
+}
+
+.footer p{
+
+    color:#d1d5db;
+
+    line-height:1.8;
+
+    margin-bottom:14px;
+
+}
+
+.footer a{
+
+    color:#fff;
+
+    font-weight:600;
+
+}
+
+.footer hr{
+
+    margin:35px 0;
+
+    border:none;
+
+    border-top:1px solid rgba(255,255,255,.12);
+
+}
+
+.copyright{
+
+    text-align:center;
+
+    color:#9ca3af;
+
+}
+
+
+
+/* ===========================================================
+ANIMAÇÕES
+=========================================================== */
+
+.card-imovel,
+.btn-busca,
+.btn-limpar,
+.btn-contato,
+.botao-whatsapp,
+#btnCarregarMais{
+
+    transition:
+        transform .25s,
+        box-shadow .25s,
+        background .25s,
+        border-color .25s;
+
+}
+
+
+
+/* ===========================================================
+TABLET
+=========================================================== */
+
+@media (max-width:1024px){
 
     .linha-filtro{
 
@@ -311,25 +1045,51 @@ select:hover{
 
     }
 
-}
+    .grid-imoveis{
 
-@media(max-width:768px){
-
-    .hero-busca{
-
-        padding:35px 15px;
+        grid-template-columns:repeat(2,minmax(0,1fr));
 
     }
 
-    .hero-texto{
+}
 
-        margin-bottom:25px;
+
+
+/* ===========================================================
+CELULAR
+=========================================================== */
+
+@media (max-width:768px){
+
+    .header-container{
+
+        padding:14px 18px;
+
+    }
+
+    .logo-nil{
+
+        height:48px;
+
+    }
+
+    .btn-contato{
+
+        padding:11px 18px;
+
+        font-size:14px;
+
+    }
+
+    .hero-busca{
+
+        padding:32px 16px 24px;
 
     }
 
     .hero-texto h1{
 
-        font-size:32px;
+        font-size:34px;
 
     }
 
@@ -343,30 +1103,24 @@ select:hover{
 
         padding:20px;
 
-        border-radius:14px;
-
     }
 
     .linha-filtro{
 
         grid-template-columns:1fr;
 
-        gap:15px;
-
-        margin-bottom:15px;
+        gap:16px;
 
     }
 
     .acoes-filtro{
 
-        flex-direction:column-reverse;
-
-        gap:12px;
+        flex-direction:column;
 
     }
 
-    .btn-limpar,
-    .btn-busca{
+    .btn-busca,
+    .btn-limpar{
 
         width:100%;
 
@@ -374,117 +1128,77 @@ select:hover{
 
     .contador{
 
+        flex-direction:column;
+
+        gap:10px;
+
         text-align:center;
 
-        justify-content:center;
+    }
 
-        margin-bottom:25px;
+    .grid-imoveis{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .infos-imovel{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    .rodape-card{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .botao-whatsapp{
+
+        width:100%;
 
     }
 
 }
 
-@media(max-width:480px){
+
+
+/* ===========================================================
+TELAS PEQUENAS
+=========================================================== */
+
+@media (max-width:480px){
 
     .hero-texto h1{
+
+        font-size:28px;
+
+    }
+
+    .titulo-imovel{
+
+        font-size:21px;
+
+    }
+
+    .valor{
 
         font-size:26px;
 
     }
 
-    .hero-texto p{
+    .infos-imovel{
 
-        font-size:15px;
-
-    }
-
-    .campo input,
-    .campo select{
-
-        height:48px;
-
-        font-size:14px;
+        gap:10px;
 
     }
 
-    .btn-busca,
-    .btn-limpar{
+    .infos-imovel span{
 
-        height:48px;
-
-    }
-
-}
-
-/* =========================================================
-   SCROLL
-========================================================= */
-
-::-webkit-scrollbar{
-
-    width:8px;
-
-    height:8px;
-
-}
-
-::-webkit-scrollbar-thumb{
-
-    background:#d4d4d4;
-
-    border-radius:20px;
-
-}
-
-::-webkit-scrollbar-thumb:hover{
-
-    background:#bdbdbd;
-
-}
-
-/* =========================================================
-   LOADING
-========================================================= */
-
-.loading{
-
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(255,255,255,.85);
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    z-index:9999;
-
-}
-
-.spinner{
-
-    width:50px;
-
-    height:50px;
-
-    border:5px solid #ececec;
-
-    border-top:5px solid #f97316;
-
-    border-radius:50%;
-
-    animation:girar .8s linear infinite;
-
-}
-
-@keyframes girar{
-
-    to{
-
-        transform:rotate(360deg);
+        padding:12px 6px;
 
     }
 

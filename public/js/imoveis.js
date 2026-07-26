@@ -130,9 +130,13 @@ async function carregarImoveis(){
 
 function mostrarLoading(){
 
-    contador.innerHTML="Carregando imóveis...";
+    loading.style.display = "flex";
 
-    lista.innerHTML="";
+}
+
+function esconderLoading(){
+
+    loading.style.display = "none";
 
 }
 
@@ -367,47 +371,37 @@ function popularFinalidades(){
 
 function render(){
 
-    lista.innerHTML="";
-
-    contador.innerHTML=`
+    contador.innerHTML = `
         Mostrando
-        <strong>${Math.min(quantidadeExibida,listaFiltrada.length)}</strong>
+        <strong>${Math.min(quantidadeExibida, listaFiltrada.length)}</strong>
         de
         <strong>${listaFiltrada.length}</strong>
-        imóveis
+        imóveis encontrados
     `;
 
-    if(listaFiltrada.length===0){
+    if(listaFiltrada.length === 0){
 
-        lista.innerHTML=`
-
+        lista.innerHTML = `
             <div class="sem-imoveis">
-
                 <h2>Nenhum imóvel encontrado</h2>
-
                 <p>Altere os filtros para encontrar novos resultados.</p>
-
             </div>
-
         `;
 
         return;
 
     }
 
-    listaFiltrada
-        .slice(0,quantidadeExibida)
-        .forEach(imovel=>{
+    const html = listaFiltrada
+        .slice(0, quantidadeExibida)
+        .map(imovel => criarCard(imovel))
+        .join("");
 
-            lista.innerHTML+=criarCard(imovel);
-
-        });
+    lista.innerHTML = html;
 
     renderBotaoCarregarMais();
 
 }
-
-
 
 // ======================================================
 // BOTÃO CARREGAR MAIS
@@ -415,39 +409,51 @@ function render(){
 
 function renderBotaoCarregarMais(){
 
-    if(quantidadeExibida>=listaFiltrada.length){
+    const antigo = document.querySelector(".carregar-mais");
+
+    if(antigo){
+
+        antigo.remove();
+
+    }
+
+    if(listaFiltrada.length <= quantidadeExibida){
 
         return;
 
     }
 
-    lista.innerHTML+=`
+    const div = document.createElement("div");
 
-        <div class="carregar-mais">
+    div.className = "carregar-mais";
 
-            <button id="btnCarregarMais">
-
-                Carregar mais imóveis
-
-            </button>
-
-        </div>
-
+    div.innerHTML = `
+        <button id="btnCarregarMais">
+            Carregar mais imóveis
+        </button>
     `;
+
+    lista.appendChild(div);
 
     document
         .getElementById("btnCarregarMais")
-        .addEventListener("click",()=>{
+        .addEventListener("click", () => {
 
-            quantidadeExibida+=LIMITE_INICIAL;
+            quantidadeExibida += QUANTIDADE_POR_PAGINA;
 
             render();
+
+            window.scrollTo({
+
+                top:0,
+
+                behavior:"smooth"
+
+            });
 
         });
 
 }
-
-
 
 // ======================================================
 // CARD
@@ -455,95 +461,93 @@ function renderBotaoCarregarMais(){
 
 function criarCard(imovel){
 
-    const imagem=obterImagem(imovel);
+    const imagem = obterImagem(imovel);
 
-    const titulo=imovel.titulo || "Imóvel";
+    const titulo = imovel.titulo || "Imóvel";
 
-    const codigo=imovel.codigo || "";
+    const codigo = imovel.codigo || "-";
 
-    const bairro=imovel.bairro || "";
+    const bairro = imovel.bairro || "";
 
-    const cidade=imovel.cidade || "";
+    const cidade = imovel.cidade || "";
 
-    const dormitorios=
-        imovel.dormitorios ||
-        imovel.quartos ||
-        0;
+    const tipo = imovel.tipo || "Imóvel";
 
-    const banheiros=
-        imovel.banheiros ||
-        0;
-
-    const vagas=
-        imovel.vagas ||
-        imovel.garagem ||
-        0;
-
-    const area=
-        imovel.area ||
-        imovel.areaPrivativa ||
-        imovel.area_total ||
-        0;
-
-    const valor=formatarValor(imovel.valor);
-
-    const finalidade=
+    const finalidade =
         imovel.finalidade ||
         imovel.negocio ||
         imovel.tipoNegocio ||
         "";
 
-    const tipo=imovel.tipo || "";
+    const dormitorios =
+        imovel.dormitorios ??
+        imovel.quartos ??
+        0;
+
+    const banheiros =
+        imovel.banheiros ??
+        0;
+
+    const vagas =
+        imovel.vagas ??
+        imovel.garagem ??
+        0;
+
+    const area =
+        imovel.area ??
+        imovel.areaPrivativa ??
+        imovel.area_total ??
+        0;
+
+    const valor = formatarValor(imovel.valor);
 
     return `
 
-<div
-class="card-imovel"
-onclick="abrirImovel('${codigo}')">
+<div class="card-imovel" onclick="abrirImovel('${codigo}')">
 
     <div class="imagem-imovel">
 
         <img
-        src="${imagem}"
-        loading="lazy"
-        alt="${titulo}"
-        onerror="this.src='https://placehold.co/900x650?text=Sem+Imagem'">
+            src="${imagem}"
+            alt="${titulo}"
+            loading="lazy"
+            onerror="this.src='https://placehold.co/900x650?text=Sem+Imagem'">
 
         ${finalidade ? `
-
-        <span class="badge-finalidade">
-
-            ${finalidade}
-
-        </span>
-
+            <span class="badge-finalidade">
+                ${finalidade}
+            </span>
         ` : ""}
 
     </div>
 
     <div class="conteudo-imovel">
 
-        <div class="codigo">
+        <div class="topo-card">
 
-            Código ${codigo}
+            <span class="tipo-imovel">
+
+                ${tipo}
+
+            </span>
+
+            <span class="codigo">
+
+                Código ${codigo}
+
+            </span>
 
         </div>
 
-        <h3>
+        <h3 class="titulo-imovel">
 
             ${titulo}
 
         </h3>
 
-        <p class="endereco">
+        <div class="endereco">
 
-            ${bairro}${cidade ? " - "+cidade : ""}
-
-        </p>
-
-        <div class="tipo-imovel">
-
-            ${tipo}
+            📍 ${bairro}${cidade ? " • " + cidade : ""}
 
         </div>
 
@@ -551,25 +555,33 @@ onclick="abrirImovel('${codigo}')">
 
             <span>
 
-                🛏 ${dormitorios}
+                🛏
+
+                <strong>${dormitorios}</strong>
 
             </span>
 
             <span>
 
-                🚿 ${banheiros}
+                🚿
+
+                <strong>${banheiros}</strong>
 
             </span>
 
             <span>
 
-                🚗 ${vagas}
+                🚗
+
+                <strong>${vagas}</strong>
 
             </span>
 
             <span>
 
-                📐 ${area} m²
+                📐
+
+                <strong>${area} m²</strong>
 
             </span>
 
@@ -577,17 +589,27 @@ onclick="abrirImovel('${codigo}')">
 
         <div class="rodape-card">
 
-            <div class="valor">
+            <div>
 
-                ${valor}
+                <span class="texto-preco">
+
+                    Valor
+
+                </span>
+
+                <div class="valor">
+
+                    ${valor}
+
+                </div>
 
             </div>
 
             <a
-            href="${linkWhatsApp(imovel)}"
-            class="botao-whatsapp"
-            target="_blank"
-            onclick="event.stopPropagation();">
+                class="botao-whatsapp"
+                href="${linkWhatsApp(imovel)}"
+                target="_blank"
+                onclick="event.stopPropagation();">
 
                 Tenho interesse
 
@@ -603,51 +625,37 @@ onclick="abrirImovel('${codigo}')">
 
 }
 
-
-
 // ======================================================
 // UTILITÁRIOS
 // ======================================================
 
 function obterImagem(imovel){
 
-    if(Array.isArray(imovel.imagens) && imovel.imagens.length){
+    if(imovel.fotos?.length){
 
-        const img=imovel.imagens[0];
-
-        if(typeof img==="string"){
-
-            return img;
-
-        }
-
-        if(img.url){
-
-            return img.url;
-
-        }
-
-        if(img.imagem){
-
-            return img.imagem;
-
-        }
+        return imovel.fotos[0];
 
     }
 
-    return(
+    if(imovel.imagens?.length){
 
-        imovel.imagem ||
+        return imovel.imagens[0];
 
-        imovel.foto ||
+    }
 
-        imovel.thumbnail ||
+    if(imovel.imagem){
 
-        imovel.fotoPrincipal ||
+        return imovel.imagem;
 
-        "https://placehold.co/900x650?text=Sem+Imagem"
+    }
 
-    );
+    if(imovel.foto){
+
+        return imovel.foto;
+
+    }
+
+    return "https://placehold.co/900x650?text=Sem+Imagem";
 
 }
 
@@ -655,27 +663,23 @@ function obterImagem(imovel){
 
 function formatarValor(valor){
 
-    const numero=Number(valor);
+    const numero = Number(valor);
 
-    if(!numero){
+    if(!numero || numero <= 0){
 
         return "Consulte";
 
     }
 
-    return numero.toLocaleString(
+    return numero.toLocaleString("pt-BR",{
 
-        "pt-BR",
+        style:"currency",
 
-        {
+        currency:"BRL",
 
-            style:"currency",
+        maximumFractionDigits:0
 
-            currency:"BRL"
-
-        }
-
-    );
+    });
 
 }
 
@@ -683,11 +687,22 @@ function formatarValor(valor){
 
 function linkWhatsApp(imovel){
 
-    return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
+    const telefone = "5554997010512";
 
-`Olá! Tenho interesse no imóvel ${imovel.codigo || ""} - ${imovel.titulo || ""}.`
+    const mensagem =
+`Olá!
 
-    )}`;
+Tenho interesse neste imóvel.
+
+Código: ${imovel.codigo}
+
+${imovel.titulo}
+
+Valor: ${formatarValor(imovel.valor)}
+
+Pode me enviar mais informações?`;
+
+    return `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
 
 }
 
@@ -695,9 +710,16 @@ function linkWhatsApp(imovel){
 
 function abrirImovel(codigo){
 
-    window.location.href=`/pages/imovel.html?codigo=${codigo}`;
+    window.open(
+
+        `https://nilimoveis.imb.br/imovel/${codigo}`,
+
+        "_blank"
+
+    );
 
 }
+
 // ======================================================
 // FILTROS
 // ======================================================
