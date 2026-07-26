@@ -358,7 +358,7 @@ function aplicarFiltros(){
 
     listaFiltrada = todosImoveis.filter(imovel=>{
 
-        const codigo = String(imovel.codigo || "").toLowerCase();
+        const codigo = String(imovel.id || "").toLowerCase();
 
         const titulo = String(imovel.titulo || imovel.nome || "").toLowerCase();
 
@@ -893,7 +893,7 @@ function abrirImovel(codigo){
 
     window.open(
 
-        `https://nilimoveis.imb.br/imovel/${codigo}`,
+        `https://imoveis.nilimoveis.imb.br/imovel/${codigo}`,
 
         "_blank"
 
