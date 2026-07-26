@@ -900,7 +900,10 @@ Pode me enviar mais informações?`;
 
 function abrirImovel(codigo){
 
-  console.log(todosImoveis.find(i => i.codigo == codigo));
+       window.open(
+        `https://imoveis.nilimoveis.imb.br/pages/imovel.html?codigo=${codigo}`,
+        "_blank"
+    );
 
 }
 
