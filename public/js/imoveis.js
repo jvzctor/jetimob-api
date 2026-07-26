@@ -380,8 +380,8 @@ function aplicarFiltros(){
 
         const cidade = String(imovel.cidade || "").toLowerCase();
 
-        const tipo = obterCategoria(imovel);
-        
+        const tipo = imovel.tipo || "";
+
         const finalidade =
             imovel.finalidade ||
             imovel.negocio ||
