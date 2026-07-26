@@ -204,7 +204,7 @@ function atualizarFiltros(){
         filtroFinalidade.innerHTML =
             `<option value="Venda">Venda</option>`;
 
-        filtroFinalidade.value = "Venda";
+        filtroFinalidade.value = "";
 
         filtroFinalidade.disabled = true;
 
@@ -372,7 +372,7 @@ function aplicarFiltros(){
 
     listaFiltrada = todosImoveis.filter(imovel=>{
 
-        const codigo = String(imovel.id || "").toLowerCase();
+        const codigo = String(imovel.codigo || "").toLowerCase();
 
         const titulo = String(imovel.titulo || imovel.nome || "").toLowerCase();
 
@@ -546,7 +546,7 @@ document.querySelectorAll(".card-imovel").forEach(card => {
     };
 });
 
-
+}
 
 
 // ======================================================
