@@ -1,7 +1,7 @@
 // ======================================================
-// PORTAL DE IMÓVEIS - Z3 COMMERCE
-// Cliente: Nil Imóveis
-// Arquivo: imoveis.js
+// PORTAL DE IMÓVEIS
+// Nil Imóveis
+// Desenvolvido por Z3 Commerce
 // ======================================================
 
 
@@ -26,6 +26,8 @@ const lista = document.getElementById("lista-imoveis");
 
 const contador = document.getElementById("contador");
 
+const loading = document.getElementById("loading");
+
 const pesquisa = document.getElementById("pesquisa");
 
 const filtroTipo = document.getElementById("tipo");
@@ -49,7 +51,7 @@ const btnLimpar = document.getElementById("btnLimpar");
 
 
 // ======================================================
-// DADOS
+// ESTADO
 // ======================================================
 
 let todosImoveis = [];
@@ -64,7 +66,7 @@ let quantidadeExibida = LIMITE_INICIAL;
 // INICIAR
 // ======================================================
 
-window.addEventListener("DOMContentLoaded", iniciar);
+document.addEventListener("DOMContentLoaded", iniciar);
 
 
 
@@ -72,43 +74,15 @@ async function iniciar(){
 
     mostrarLoading();
 
-    await carregarImoveis();
-
-    popularTipos();
-
-    popularCidades();
-
-    popularFinalidades();
-
-    popularBairros();
-
-    aplicarFiltros();
-
-}
-
-
-
-// ======================================================
-// API
-// ======================================================
-
-async function carregarImoveis(){
-
     try{
 
-        const response = await fetch(API);
+        await carregarImoveis();
 
-        if(!response.ok){
+        atualizarFiltros();
 
-            throw new Error("Erro ao carregar imóveis");
+        registrarEventos();
 
-        }
-
-        const dados = await response.json();
-
-        todosImoveis = Array.isArray(dados)
-            ? dados
-            : [];
+        aplicarFiltros();
 
     }
 
@@ -120,35 +94,45 @@ async function carregarImoveis(){
 
     }
 
+    finally{
+
+        esconderLoading();
+
+    }
+
 }
-
-
-
 // ======================================================
 // LOADING
 // ======================================================
 
 function mostrarLoading(){
 
-    loading.style.display = "flex";
+    if(loading){
+
+        loading.style.display="flex";
+
+    }
 
 }
+
+
 
 function esconderLoading(){
 
-    loading.style.display = "none";
+    if(loading){
+
+        loading.style.display="none";
+
+    }
 
 }
-
-
-
 // ======================================================
 // ERRO
 // ======================================================
 
 function mostrarErro(){
 
-    contador.innerHTML="Erro ao carregar imóveis.";
+    contador.textContent="Erro ao carregar imóveis.";
 
     lista.innerHTML=`
 
@@ -156,181 +140,102 @@ function mostrarErro(){
 
             <h2>Não foi possível carregar os imóveis.</h2>
 
-            <p>Tente novamente em alguns instantes.</p>
+            <p>Tente novamente mais tarde.</p>
 
         </div>
 
     `;
 
 }
-
-
-
 // ======================================================
-// POPULAR TIPOS
+// API
 // ======================================================
 
-function popularTipos(){
+async function carregarImoveis(){
 
-    if(!filtroTipo) return;
+    const response = await fetch(API);
 
-    filtroTipo.innerHTML=`
-        <option value="">Todos os tipos</option>
-    `;
+    if(!response.ok){
 
-    const tipos=[
-
-        ...new Set(
-
-            todosImoveis
-
-                .map(i=>i.tipo)
-
-                .filter(Boolean)
-
-        )
-
-    ].sort();
-
-    tipos.forEach(tipo=>{
-
-        filtroTipo.innerHTML+=`
-
-            <option value="${tipo}">
-
-                ${tipo}
-
-            </option>
-
-        `;
-
-    });
-
-}
-
-
-
-// ======================================================
-// POPULAR CIDADES
-// ======================================================
-
-function popularCidades(){
-
-    if(!filtroCidade) return;
-
-    filtroCidade.innerHTML=`
-
-        <option value="">Todas as cidades</option>
-
-    `;
-
-    const cidades=[
-
-        ...new Set(
-
-            todosImoveis
-
-                .map(i=>i.cidade)
-
-                .filter(Boolean)
-
-        )
-
-    ].sort();
-
-    cidades.forEach(cidade=>{
-
-        filtroCidade.innerHTML+=`
-
-            <option value="${cidade}">
-
-                ${cidade}
-
-            </option>
-
-        `;
-
-    });
-
-}
-
-
-
-// ======================================================
-// POPULAR BAIRROS
-// ======================================================
-
-function popularBairros(){
-
-    if(!filtroBairro) return;
-
-    filtroBairro.innerHTML=`
-
-        <option value="">Todos os bairros</option>
-
-    `;
-
-    let origem=[...todosImoveis];
-
-    if(filtroCidade && filtroCidade.value){
-
-        origem=origem.filter(
-
-            imovel=>imovel.cidade===filtroCidade.value
-
-        );
+        throw new Error("Erro ao carregar imóveis.");
 
     }
 
-    const bairros=[
+    const dados = await response.json();
 
-        ...new Set(
-
-            origem
-
-                .map(i=>i.bairro)
-
-                .filter(Boolean)
-
-        )
-
-    ].sort();
-
-    bairros.forEach(bairro=>{
-
-        filtroBairro.innerHTML+=`
-
-            <option value="${bairro}">
-
-                ${bairro}
-
-            </option>
-
-        `;
-
-    });
+    todosImoveis = Array.isArray(dados) ? dados : [];
 
 }
 
 
 
 // ======================================================
-// POPULAR FINALIDADES
+// FILTROS
 // ======================================================
 
-function popularFinalidades(){
+function atualizarFiltros(){
 
-    if(!filtroFinalidade) return;
+    preencherSelect(
 
-    filtroFinalidade.innerHTML=`
+        filtroTipo,
 
-        <option value="">Todas</option>
+        "Todos os tipos",
 
-    `;
+        [...new Set(
 
-    const finalidades=[
+            todosImoveis
 
-        ...new Set(
+                .map(i => i.tipo)
+
+                .filter(Boolean)
+
+        )]
+
+    );
+
+
+
+    preencherSelect(
+
+        filtroCidade,
+
+        "Todas as cidades",
+
+        [...new Set(
+
+            todosImoveis
+
+                .map(i => i.cidade)
+
+                .filter(Boolean)
+
+        )]
+
+    );
+
+
+
+    preencherFinalidades();
+
+    atualizarBairros();
+
+}
+
+
+
+// ======================================================
+// FINALIDADES
+// ======================================================
+
+function preencherFinalidades(){
+
+    preencherSelect(
+
+        filtroFinalidade,
+
+        "Todas",
+
+        [...new Set(
 
             todosImoveis
 
@@ -346,62 +251,316 @@ function popularFinalidades(){
 
                 .filter(Boolean)
 
-        )
+        )]
 
-    ].sort();
+    );
 
-    finalidades.forEach(item=>{
+}
 
-        filtroFinalidade.innerHTML+=`
 
-            <option value="${item}">
 
-                ${item}
+// ======================================================
+// BAIRROS
+// ======================================================
 
-            </option>
+function atualizarBairros(){
 
-        `;
+    if(!filtroBairro){
+
+        return;
+
+    }
+
+    let origem = [...todosImoveis];
+
+
+
+    if(filtroCidade?.value){
+
+        origem = origem.filter(
+
+            i => i.cidade === filtroCidade.value
+
+        );
+
+    }
+
+
+
+    preencherSelect(
+
+        filtroBairro,
+
+        "Todos os bairros",
+
+        [...new Set(
+
+            origem
+
+                .map(i => i.bairro)
+
+                .filter(Boolean)
+
+        )]
+
+    );
+
+}
+
+
+
+// ======================================================
+// UTILITÁRIO DOS SELECTS
+// ======================================================
+
+function preencherSelect(
+
+    elemento,
+
+    primeiroItem,
+
+    valores
+
+){
+
+    if(!elemento){
+
+        return;
+
+    }
+
+
+
+    elemento.innerHTML =
+
+        `<option value="">${primeiroItem}</option>` +
+
+        valores
+
+            .sort()
+
+            .map(valor =>
+
+                `<option value="${valor}">${valor}</option>`
+
+            )
+
+            .join("");
+
+}
+// ======================================================
+// FILTRAR IMÓVEIS
+// ======================================================
+
+function aplicarFiltros(){
+
+    quantidadeExibida = LIMITE_INICIAL;
+
+    listaFiltrada = todosImoveis.filter(imovel=>{
+
+        const codigo = String(imovel.codigo || "").toLowerCase();
+
+        const titulo = String(imovel.titulo || imovel.nome || "").toLowerCase();
+
+        const bairro = String(imovel.bairro || "").toLowerCase();
+
+        const cidade = String(imovel.cidade || "").toLowerCase();
+
+        const tipo = imovel.tipo || "";
+
+        const finalidade =
+            imovel.finalidade ||
+            imovel.negocio ||
+            imovel.tipoNegocio ||
+            "";
+
+        const quartos = Number(
+
+            imovel.dormitorios ||
+
+            imovel.quartos ||
+
+            0
+
+        );
+
+        const valor = Number(imovel.valor || 0);
+
+        const busca = pesquisa.value.trim().toLowerCase();
+
+        if(
+
+            busca &&
+
+            !codigo.includes(busca) &&
+
+            !titulo.includes(busca) &&
+
+            !bairro.includes(busca) &&
+
+            !cidade.includes(busca)
+
+        ){
+
+            return false;
+
+        }
+
+        if(filtroTipo.value && tipo !== filtroTipo.value){
+
+            return false;
+
+        }
+
+        if(filtroCidade.value && cidade !== filtroCidade.value.toLowerCase()){
+
+            return false;
+
+        }
+
+        if(filtroBairro.value && bairro !== filtroBairro.value.toLowerCase()){
+
+            return false;
+
+        }
+
+        if(
+
+            filtroFinalidade.value &&
+
+            finalidade !== filtroFinalidade.value
+
+        ){
+
+            return false;
+
+        }
+
+        if(
+
+            filtroDormitorios.value &&
+
+            quartos < Number(filtroDormitorios.value)
+
+        ){
+
+            return false;
+
+        }
+
+        if(
+
+            valorMin.value &&
+
+            valor < Number(valorMin.value)
+
+        ){
+
+            return false;
+
+        }
+
+        if(
+
+            valorMax.value &&
+
+            valor > Number(valorMax.value)
+
+        ){
+
+            return false;
+
+        }
+
+        return true;
 
     });
 
+    listaFiltrada.sort(
+
+        (a,b)=>
+
+            Number(b.codigo||0)-Number(a.codigo||0)
+
+    );
+
+    render();
+
 }
+
+
+
 // ======================================================
 // RENDER
 // ======================================================
 
 function render(){
 
-    contador.innerHTML = `
-        Mostrando
-        <strong>${Math.min(quantidadeExibida, listaFiltrada.length)}</strong>
-        de
-        <strong>${listaFiltrada.length}</strong>
-        imóveis encontrados
-    `;
+    atualizarContador();
 
-    if(listaFiltrada.length === 0){
+    if(!listaFiltrada.length){
 
         lista.innerHTML = `
+
             <div class="sem-imoveis">
+
                 <h2>Nenhum imóvel encontrado</h2>
-                <p>Altere os filtros para encontrar novos resultados.</p>
+
+                <p>Tente alterar os filtros.</p>
+
             </div>
+
         `;
 
         return;
 
     }
 
-    const html = listaFiltrada
-        .slice(0, quantidadeExibida)
-        .map(imovel => criarCard(imovel))
-        .join("");
+    lista.innerHTML = listaFiltrada
 
-    lista.innerHTML = html;
+        .slice(0, quantidadeExibida)
+
+        .map(criarCard)
+
+        .join("");
 
     renderBotaoCarregarMais();
 
 }
+
+
+
+// ======================================================
+// CONTADOR
+// ======================================================
+
+function atualizarContador(){
+
+    contador.innerHTML = `
+
+        Mostrando
+
+        <strong>
+
+            ${Math.min(quantidadeExibida,listaFiltrada.length)}
+
+        </strong>
+
+        de
+
+        <strong>
+
+            ${listaFiltrada.length}
+
+        </strong>
+
+        imóveis encontrados
+
+    `;
+
+}
+
+
 
 // ======================================================
 // BOTÃO CARREGAR MAIS
@@ -409,15 +568,17 @@ function render(){
 
 function renderBotaoCarregarMais(){
 
-    const antigo = document.querySelector(".carregar-mais");
+    document
 
-    if(antigo){
+        .querySelector(".carregar-mais")
 
-        antigo.remove();
+        ?.remove();
 
-    }
+    if(
 
-    if(listaFiltrada.length <= quantidadeExibida){
+        quantidadeExibida >= listaFiltrada.length
+
+    ){
 
         return;
 
@@ -428,33 +589,30 @@ function renderBotaoCarregarMais(){
     div.className = "carregar-mais";
 
     div.innerHTML = `
+
         <button id="btnCarregarMais">
+
             Carregar mais imóveis
+
         </button>
+
     `;
 
-    lista.appendChild(div);
+    lista.after(div);
 
     document
-        .getElementById("btnCarregarMais")
-        .addEventListener("click", () => {
 
-            quantidadeExibida += QUANTIDADE_POR_PAGINA;
+        .getElementById("btnCarregarMais")
+
+        .addEventListener("click",()=>{
+
+            quantidadeExibida += LIMITE_INICIAL;
 
             render();
-
-            window.scrollTo({
-
-                top:0,
-
-                behavior:"smooth"
-
-            });
 
         });
 
 }
-
 // ======================================================
 // CARD
 // ======================================================
@@ -463,15 +621,15 @@ function criarCard(imovel){
 
     const imagem = obterImagem(imovel);
 
-    const titulo = imovel.titulo || "Imóvel";
+    const titulo = imovel.titulo || imovel.nome || "Imóvel";
 
     const codigo = imovel.codigo || "-";
 
-    const bairro = imovel.bairro || "";
+    const tipo = imovel.tipo || "Imóvel";
 
     const cidade = imovel.cidade || "";
 
-    const tipo = imovel.tipo || "Imóvel";
+    const bairro = imovel.bairro || "";
 
     const finalidade =
         imovel.finalidade ||
@@ -499,8 +657,6 @@ function criarCard(imovel){
         imovel.area_total ??
         0;
 
-    const valor = formatarValor(imovel.valor);
-
     return `
 
 <div class="card-imovel" onclick="abrirImovel('${codigo}')">
@@ -513,11 +669,13 @@ function criarCard(imovel){
             loading="lazy"
             onerror="this.src='https://placehold.co/900x650?text=Sem+Imagem'">
 
-        ${finalidade ? `
-            <span class="badge-finalidade">
-                ${finalidade}
-            </span>
-        ` : ""}
+        ${
+            finalidade
+            ?
+            `<span class="badge-finalidade">${finalidade}</span>`
+            :
+            ""
+        }
 
     </div>
 
@@ -599,16 +757,20 @@ function criarCard(imovel){
 
                 <div class="valor">
 
-                    ${valor}
+                    ${formatarValor(imovel.valor)}
 
                 </div>
 
             </div>
 
             <a
-                class="botao-whatsapp"
+
                 href="${linkWhatsApp(imovel)}"
+
                 target="_blank"
+
+                class="botao-whatsapp"
+
                 onclick="event.stopPropagation();">
 
                 Tenho interesse
@@ -625,19 +787,21 @@ function criarCard(imovel){
 
 }
 
+
+
 // ======================================================
-// UTILITÁRIOS
+// IMAGEM
 // ======================================================
 
 function obterImagem(imovel){
 
-    if(imovel.fotos?.length){
+    if(Array.isArray(imovel.fotos) && imovel.fotos.length){
 
         return imovel.fotos[0];
 
     }
 
-    if(imovel.imagens?.length){
+    if(Array.isArray(imovel.imagens) && imovel.imagens.length){
 
         return imovel.imagens[0];
 
@@ -661,52 +825,69 @@ function obterImagem(imovel){
 
 
 
+// ======================================================
+// VALOR
+// ======================================================
+
 function formatarValor(valor){
 
     const numero = Number(valor);
 
-    if(!numero || numero <= 0){
+    if(!numero){
 
         return "Consulte";
 
     }
 
-    return numero.toLocaleString("pt-BR",{
+    return numero.toLocaleString(
 
-        style:"currency",
+        "pt-BR",
 
-        currency:"BRL",
+        {
 
-        maximumFractionDigits:0
+            style:"currency",
 
-    });
+            currency:"BRL",
+
+            maximumFractionDigits:0
+
+        }
+
+    );
 
 }
 
 
 
+// ======================================================
+// WHATSAPP
+// ======================================================
+
 function linkWhatsApp(imovel){
 
-    const telefone = "5554997010512";
-
     const mensagem =
+
 `Olá!
 
 Tenho interesse neste imóvel.
 
 Código: ${imovel.codigo}
 
-${imovel.titulo}
+${imovel.titulo || imovel.nome}
 
 Valor: ${formatarValor(imovel.valor)}
 
 Pode me enviar mais informações?`;
 
-    return `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+    return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
 
 }
 
 
+
+// ======================================================
+// ABRIR IMÓVEL
+// ======================================================
 
 function abrirImovel(codigo){
 
@@ -719,220 +900,37 @@ function abrirImovel(codigo){
     );
 
 }
-
 // ======================================================
-// FILTROS
+// EVENTOS
 // ======================================================
 
-function aplicarFiltros(){
+function registrarEventos(){
 
-    quantidadeExibida=LIMITE_INICIAL;
+    btnBuscar?.addEventListener("click", aplicarFiltros);
 
-    let resultado=[...todosImoveis];
+    btnLimpar?.addEventListener("click", limparFiltros);
 
+    pesquisa?.addEventListener("input", aplicarFiltros);
 
+    filtroTipo?.addEventListener("change", aplicarFiltros);
 
-    // ==========================================
-    // PESQUISA
-    // ==========================================
+    filtroCidade?.addEventListener("change", () => {
 
-    if(pesquisa && pesquisa.value.trim()!==""){
+        atualizarBairros();
 
-        const texto=pesquisa.value
-            .trim()
-            .toLowerCase();
-
-        resultado=resultado.filter(imovel=>{
-
-            return [
-
-                imovel.codigo,
-
-                imovel.titulo,
-
-                imovel.nome,
-
-                imovel.referencia,
-
-                imovel.tipo,
-
-                imovel.cidade,
-
-                imovel.bairro
-
-            ]
-
-            .filter(Boolean)
-
-            .some(campo=>
-
-                String(campo)
-
-                    .toLowerCase()
-
-                    .includes(texto)
-
-            );
-
-        });
-
-    }
-
-
-
-    // ==========================================
-    // TIPO
-    // ==========================================
-
-    if(filtroTipo && filtroTipo.value){
-
-        resultado=resultado.filter(imovel=>
-
-            imovel.tipo===filtroTipo.value
-
-        );
-
-    }
-
-
-
-    // ==========================================
-    // CIDADE
-    // ==========================================
-
-    if(filtroCidade && filtroCidade.value){
-
-        resultado=resultado.filter(imovel=>
-
-            imovel.cidade===filtroCidade.value
-
-        );
-
-    }
-
-
-
-    // ==========================================
-    // BAIRRO
-    // ==========================================
-
-    if(filtroBairro && filtroBairro.value){
-
-        resultado=resultado.filter(imovel=>
-
-            imovel.bairro===filtroBairro.value
-
-        );
-
-    }
-
-
-
-    // ==========================================
-    // FINALIDADE
-    // ==========================================
-
-    if(filtroFinalidade && filtroFinalidade.value){
-
-        resultado=resultado.filter(imovel=>{
-
-            const finalidade=
-
-                imovel.finalidade ||
-
-                imovel.negocio ||
-
-                imovel.tipoNegocio ||
-
-                "";
-
-            return finalidade===filtroFinalidade.value;
-
-        });
-
-    }
-
-
-
-    // ==========================================
-    // DORMITÓRIOS
-    // ==========================================
-
-    if(filtroDormitorios && filtroDormitorios.value){
-
-        const minimo=Number(filtroDormitorios.value);
-
-        resultado=resultado.filter(imovel=>{
-
-            const quartos=Number(
-
-                imovel.dormitorios ||
-
-                imovel.quartos ||
-
-                0
-
-            );
-
-            return quartos>=minimo;
-
-        });
-
-    }
-
-
-
-    // ==========================================
-    // VALOR MÍNIMO
-    // ==========================================
-
-    if(valorMin && valorMin.value){
-
-        const minimo=Number(valorMin.value);
-
-        resultado=resultado.filter(imovel=>
-
-            Number(imovel.valor || 0)>=minimo
-
-        );
-
-    }
-
-
-
-    // ==========================================
-    // VALOR MÁXIMO
-    // ==========================================
-
-    if(valorMax && valorMax.value){
-
-        const maximo=Number(valorMax.value);
-
-        resultado=resultado.filter(imovel=>
-
-            Number(imovel.valor || 0)<=maximo
-
-        );
-
-    }
-
-
-
-    // ==========================================
-    // ORDENAÇÃO PADRÃO
-    // ==========================================
-
-    resultado.sort((a,b)=>{
-
-        return Number(b.codigo||0)-Number(a.codigo||0);
+        aplicarFiltros();
 
     });
 
+    filtroBairro?.addEventListener("change", aplicarFiltros);
 
+    filtroFinalidade?.addEventListener("change", aplicarFiltros);
 
-    listaFiltrada=resultado;
+    filtroDormitorios?.addEventListener("change", aplicarFiltros);
 
-    render();
+    valorMin?.addEventListener("input", aplicarFiltros);
+
+    valorMax?.addEventListener("input", aplicarFiltros);
 
 }
 
@@ -944,514 +942,87 @@ function aplicarFiltros(){
 
 function limparFiltros(){
 
-    if(pesquisa) pesquisa.value="";
+    pesquisa.value = "";
 
-    if(filtroTipo) filtroTipo.value="";
+    filtroTipo.value = "";
 
-    if(filtroCidade) filtroCidade.value="";
+    filtroCidade.value = "";
 
-    if(filtroBairro) filtroBairro.value="";
+    filtroBairro.value = "";
 
-    if(filtroFinalidade) filtroFinalidade.value="";
+    filtroFinalidade.value = "";
 
-    if(filtroDormitorios) filtroDormitorios.value="";
+    filtroDormitorios.value = "";
 
-    if(valorMin) valorMin.value="";
+    valorMin.value = "";
 
-    if(valorMax) valorMax.value="";
+    valorMax.value = "";
 
-    popularBairros();
-
-    aplicarFiltros();
-
-}
-
-
-
-// ======================================================
-// ATUALIZA BAIRROS AO TROCAR CIDADE
-// ======================================================
-
-function atualizarBairros(){
-
-    popularBairros();
-
-    if(filtroBairro){
-
-        filtroBairro.value="";
-
-    }
+    atualizarBairros();
 
     aplicarFiltros();
 
 }
-// ======================================================
-// EVENTOS
-// ======================================================
-
-if(pesquisa){
-
-    pesquisa.addEventListener("input",()=>{
-
-        aplicarFiltros();
-
-    });
-
-    pesquisa.addEventListener("keypress",(e)=>{
-
-        if(e.key==="Enter"){
-
-            aplicarFiltros();
-
-        }
-
-    });
-
-}
 
 
 
 // ======================================================
-// BOTÃO BUSCAR
-// ======================================================
-
-if(btnBuscar){
-
-    btnBuscar.addEventListener("click",()=>{
-
-        aplicarFiltros();
-
-    });
-
-}
-
-
-
-// ======================================================
-// BOTÃO LIMPAR
-// ======================================================
-
-if(btnLimpar){
-
-    btnLimpar.addEventListener("click",()=>{
-
-        limparFiltros();
-
-    });
-
-}
-
-
-
-// ======================================================
-// FILTRO TIPO
-// ======================================================
-
-if(filtroTipo){
-
-    filtroTipo.addEventListener("change",()=>{
-
-        aplicarFiltros();
-
-    });
-
-}
-
-
-
-// ======================================================
-// FILTRO CIDADE
-// ======================================================
-
-if(filtroCidade){
-
-    filtroCidade.addEventListener("change",()=>{
-
-        atualizarBairros();
-
-    });
-
-}
-
-
-
-// ======================================================
-// FILTRO BAIRRO
-// ======================================================
-
-if(filtroBairro){
-
-    filtroBairro.addEventListener("change",()=>{
-
-        aplicarFiltros();
-
-    });
-
-}
-
-
-
-// ======================================================
-// FILTRO FINALIDADE
-// ======================================================
-
-if(filtroFinalidade){
-
-    filtroFinalidade.addEventListener("change",()=>{
-
-        aplicarFiltros();
-
-    });
-
-}
-
-
-
-// ======================================================
-// FILTRO DORMITÓRIOS
-// ======================================================
-
-if(filtroDormitorios){
-
-    filtroDormitorios.addEventListener("change",()=>{
-
-        aplicarFiltros();
-
-    });
-
-}
-
-
-
-// ======================================================
-// VALOR MÍNIMO
-// ======================================================
-
-if(valorMin){
-
-    valorMin.addEventListener("input",()=>{
-
-        aplicarFiltros();
-
-    });
-
-}
-
-
-
-// ======================================================
-// VALOR MÁXIMO
-// ======================================================
-
-if(valorMax){
-
-    valorMax.addEventListener("input",()=>{
-
-        aplicarFiltros();
-
-    });
-
-}
-
-
-
-// ======================================================
-// OBSERVA ALTERAÇÕES NOS FILTROS
-// ======================================================
-
-[
-    filtroTipo,
-    filtroCidade,
-    filtroBairro,
-    filtroFinalidade,
-    filtroDormitorios,
-    valorMin,
-    valorMax
-]
-
-.filter(Boolean)
-
-.forEach(elemento=>{
-
-    elemento.addEventListener("change",()=>{
-
-        aplicarFiltros();
-
-    });
-
-});
-
-
-
-// ======================================================
-// RECARREGA CASO A PÁGINA VOLTE DO DETALHE
-// ======================================================
-
-window.addEventListener("pageshow",()=>{
-
-    aplicarFiltros();
-
-});
-
-
-
-// ======================================================
-// SCROLL PARA O TOPO AO PESQUISAR
-// ======================================================
-
-function voltarAoTopo(){
-
-    window.scrollTo({
-
-        top:0,
-
-        behavior:"smooth"
-
-    });
-
-}
-
-
-
-// ======================================================
-// CARREGAR MAIS
-// ======================================================
-
-function carregarMais(){
-
-    quantidadeExibida+=LIMITE_INICIAL;
-
-    render();
-
-}
-
-
-
-// ======================================================
-// ATUALIZA CONTADOR
-// ======================================================
-
-function atualizarContador(){
-
-    contador.innerHTML=`
-        Mostrando
-        <strong>${Math.min(quantidadeExibida,listaFiltrada.length)}</strong>
-        de
-        <strong>${listaFiltrada.length}</strong>
-        imóveis encontrados
-    `;
-
-}
-// ======================================================
-// UTILITÁRIOS
-// ======================================================
-
-function numero(valor){
-
-    if(valor===null || valor===undefined){
-
-        return 0;
-
-    }
-
-    if(typeof valor==="number"){
-
-        return valor;
-
-    }
-
-    return Number(
-
-        String(valor)
-
-            .replace(/\./g,"")
-            .replace(",",".")
-            .replace(/[^\d.-]/g,"")
-
-    ) || 0;
-
-}
-
-
-
-function texto(valor){
-
-    return String(valor || "")
-
-        .trim()
-
-        .toLowerCase();
-
-}
-
-
-
-function possuiTexto(campo,pesquisa){
-
-    return texto(campo).includes(texto(pesquisa));
-
-}
-
-
-
-// ======================================================
-// ORDENA LISTA
-// ======================================================
-
-function ordenarImoveis(lista){
-
-    return lista.sort((a,b)=>{
-
-        const codigoA=numero(a.codigo);
-
-        const codigoB=numero(b.codigo);
-
-        return codigoB-codigoA;
-
-    });
-
-}
-
-
-
-// ======================================================
-// ATUALIZA FILTROS
-// ======================================================
-
-function atualizarFiltros(){
-
-    popularTipos();
-
-    popularCidades();
-
-    popularFinalidades();
-
-    popularBairros();
-
-}
-
-
-
-// ======================================================
-// RECARREGAR DADOS
+// ATUALIZAÇÃO AUTOMÁTICA
 // ======================================================
 
 async function atualizarDados(){
 
-    mostrarLoading();
+    try{
 
-    await carregarImoveis();
+        await carregarImoveis();
 
-    atualizarFiltros();
+        atualizarFiltros();
 
-    aplicarFiltros();
+        aplicarFiltros();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+    }
 
 }
 
 
 
-// ======================================================
-// REFRESH AUTOMÁTICO
-// ======================================================
+// Atualiza a cada 5 minutos
+setInterval(atualizarDados, 300000);
 
-setInterval(()=>{
 
-    if(document.hidden){
 
-        return;
+// Atualiza quando voltar para a aba
+document.addEventListener("visibilitychange", () => {
+
+    if(!document.hidden){
+
+        atualizarDados();
 
     }
+
+});
+
+
+
+// Atualiza ao voltar usando histórico do navegador
+window.addEventListener("pageshow", () => {
 
     atualizarDados();
 
-},300000);
-
-
-
-// ======================================================
-// REDIMENSIONAMENTO
-// ======================================================
-
-window.addEventListener("resize",()=>{
-
-    if(window.innerWidth<768){
-
-        document.body.classList.add("mobile");
-
-    }else{
-
-        document.body.classList.remove("mobile");
-
-    }
-
 });
 
 
 
 // ======================================================
-// PRIMEIRA VERIFICAÇÃO
+// EXPORTAÇÃO GLOBAL
 // ======================================================
 
-if(window.innerWidth<768){
+window.abrirImovel = abrirImovel;
 
-    document.body.classList.add("mobile");
-
-}
-
-
-
-// ======================================================
-// ACESSIBILIDADE
-// ======================================================
-
-document.addEventListener("keydown",(e)=>{
-
-    if(e.key==="Escape"){
-
-        if(pesquisa){
-
-            pesquisa.blur();
-
-        }
-
-    }
-
-});
-
-
-
-// ======================================================
-// DEBUG
-// ======================================================
-
-console.log("===================================");
-
-console.log("Portal Nil Imóveis");
-
-console.log("Desenvolvido por Z3 Commerce");
-
-console.log("API:",API);
-
-console.log("===================================");
-
-
-
-// ======================================================
-// EXPORTA PARA ESCOPO GLOBAL
-// ======================================================
-
-window.abrirImovel=abrirImovel;
-
-window.aplicarFiltros=aplicarFiltros;
-
-window.limparFiltros=limparFiltros;
-
-window.carregarMais=carregarMais;
-
-
-
-// ======================================================
-// FIM DO ARQUIVO
-// ======================================================
-
-console.log("imoveis.js carregado com sucesso.");
+window.linkWhatsApp = linkWhatsApp;
