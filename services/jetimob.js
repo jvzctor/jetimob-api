@@ -6,14 +6,16 @@ const api = axios.create({
 
 async function listarImoveis(filtros = {}) {
 
-    const resposta = await api.get("/imoveis/todos?v=6&page=1&pageSize=100");
-
     const primeiro = resposta.data.data[0];
 
-Object.keys(primeiro).forEach(chave => {
+Object.entries(primeiro).forEach(([chave, valor]) => {
+
     if (chave.toLowerCase().includes("desc")) {
-        console.log(chave, "=>", primeiro[chave]);
+
+        console.log(chave, "=>", valor);
+
     }
+
 });
 
     let imoveis = resposta.data.data.map(imovel => ({
