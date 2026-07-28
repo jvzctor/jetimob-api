@@ -26,7 +26,11 @@ Object.entries(primeiro).forEach(([chave, valor]) => {
 
     titulo: imovel.titulo_anuncio,
 
-    descricao: imovel.descricao || "",
+    descricao:
+    imovel.observacoes ||
+    imovel.descricao_anuncio ||
+    imovel.meta_description ||
+    "",
 
     cidade: imovel.endereco_cidade,
 
@@ -177,10 +181,10 @@ console.log("============================");
         codigo: imovel.codigo,
         titulo: imovel.titulo_anuncio,
         descricao:
-            imovel.descricao ||
-            imovel.descricao_anuncio ||
-            imovel.meta_description ||
-            "",
+    imovel.observacoes ||
+    imovel.descricao_anuncio ||
+    imovel.meta_description ||
+    "",
         cidade: imovel.endereco_cidade,
         bairro: imovel.endereco_bairro,
         endereco: imovel.endereco || "",
