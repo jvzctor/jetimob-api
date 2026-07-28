@@ -20,7 +20,7 @@ async function carregarImovel() {
 
         const imovel = await response.json();
 
-        console.log(imovel);
+        console.log(JSON.stringify(imovel, null, 2));
 
         renderizarImovel(imovel);
 
