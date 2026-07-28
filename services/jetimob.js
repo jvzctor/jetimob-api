@@ -10,15 +10,16 @@ async function listarImoveis(filtros = {}) {
 
     const primeiro = resposta.data.data[0];
 
-    Object.entries(primeiro).forEach(([chave, valor]) => {
+console.log("=== CAMPOS DA JETIMOB ===");
+Object.entries(primeiro).forEach(([chave, valor]) => {
 
-        if (chave.toLowerCase().includes("desc")) {
+    if (chave.toLowerCase().includes("desc")) {
 
-            console.log(chave, "=>", valor);
+        console.log(chave, "=>", valor);
 
-        }
+    }
 
-    });
+});
 
     let imoveis = resposta.data.data.map(imovel => ({
     codigo: imovel.codigo,
