@@ -42,6 +42,8 @@ router.get("/", async (req, res) => {
 
 router.get("/:codigo", async (req, res) => {
 
+    console.log("Rota /:codigo chamada:", req.params.codigo);
+
     try {
 
         const imovel = await buscarImovel(req.params.codigo);

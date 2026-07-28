@@ -163,6 +163,8 @@ Object.entries(primeiro).forEach(([chave, valor]) => {
 
 async function buscarImovel(codigo) {
 
+    console.log("Entrou em buscarImovel:", codigo);
+
     const resposta = await api.get(`/imoveis/codigo/${codigo}?v=6`);
 
     const imovel = resposta.data.data || resposta.data;
