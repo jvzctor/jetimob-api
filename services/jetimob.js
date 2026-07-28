@@ -8,7 +8,13 @@ async function listarImoveis(filtros = {}) {
 
     const resposta = await api.get("/imoveis/todos?v=6&page=1&pageSize=100");
 
-    console.log(JSON.stringify(resposta.data.data[0], null, 2));
+    const primeiro = resposta.data.data[0];
+
+Object.keys(primeiro).forEach(chave => {
+    if (chave.toLowerCase().includes("desc")) {
+        console.log(chave, "=>", primeiro[chave]);
+    }
+});
 
     let imoveis = resposta.data.data.map(imovel => ({
     codigo: imovel.codigo,
