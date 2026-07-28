@@ -52,8 +52,12 @@ function renderizarImovel(imovel) {
     document.getElementById("valor").textContent =
         formatarValor(imovel.valor);
 
-    document.getElementById("descricao").textContent =
-        imovel.descricao || "Descrição não informada.";
+   document.getElementById("descricao").innerHTML =
+    imovel.descricao ||
+    imovel.descricaoWeb ||
+    imovel.observacoes ||
+    imovel.observacao ||
+    "Descrição não informada.";
 
     montarCaracteristicas(imovel);
 

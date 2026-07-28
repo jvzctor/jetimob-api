@@ -36,8 +36,6 @@ const filtroCidade = document.getElementById("cidade");
 
 const filtroBairro = document.getElementById("bairro");
 
-const filtroFinalidade = document.getElementById("finalidade");
-
 const filtroDormitorios = document.getElementById("dormitorios");
 
 const valorMin = document.getElementById("valorMin");
@@ -202,44 +200,6 @@ function atualizarFiltros(){
 
 }
 
-
-
-// ======================================================
-// FINALIDADES
-// ======================================================
-
-function preencherFinalidades(){
-
-    preencherSelect(
-
-        filtroFinalidade,
-
-        "Todas",
-
-        [...new Set(
-
-            todosImoveis
-
-                .map(i=>
-
-                    i.finalidade ||
-
-                    i.negocio ||
-
-                    i.tipoNegocio
-
-                )
-
-                .filter(Boolean)
-
-        )]
-
-    );
-
-}
-
-
-
 // ======================================================
 // BAIRROS
 // ======================================================
@@ -378,12 +338,6 @@ function aplicarFiltros(){
         const cidade = String(imovel.cidade || "").toLowerCase();
 
         const tipo = obterCategoria(imovel);
-
-        const finalidade =
-            imovel.finalidade ||
-            imovel.negocio ||
-            imovel.tipoNegocio ||
-            "";
 
         const quartos = Number(
 
@@ -636,12 +590,6 @@ function criarCard(imovel){
     const cidade = imovel.cidade || "";
 
     const bairro = imovel.bairro || "";
-
-    const finalidade =
-        imovel.finalidade ||
-        imovel.negocio ||
-        imovel.tipoNegocio ||
-        "";
 
     const dormitorios =
         imovel.dormitorios ??
@@ -951,8 +899,6 @@ function limparFiltros(){
     filtroCidade.value = "";
 
     filtroBairro.value = "";
-
-    filtroFinalidade.value = "";
 
     filtroDormitorios.value = "";
 
