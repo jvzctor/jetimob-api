@@ -169,15 +169,9 @@ async function buscarImovel(codigo) {
 
     const imovel = resposta.data.data || resposta.data;
 
-    console.log("CHAVES DO OBJETO:");
+    console.log("===== CHAVES DO IMÓVEL =====");
 console.log(Object.keys(imovel));
-
-console.log("CAMPOS COM 'desc':");
-Object.keys(imovel).forEach((k) => {
-    if (k.toLowerCase().includes("desc")) {
-        console.log(k, "=", imovel[k]);
-    }
-});
+console.log("============================");
 
     return {
         codigo: imovel.codigo,
