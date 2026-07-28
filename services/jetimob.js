@@ -167,6 +167,10 @@ async function buscarImovel(codigo) {
 
     const imovel = resposta.data.data || resposta.data;
 
+    console.log("========== DETALHE DO IMÓVEL ==========");
+console.log(JSON.stringify(imovel, null, 2));
+console.log("=======================================");
+
     return {
         codigo: imovel.codigo,
         titulo: imovel.titulo_anuncio,
