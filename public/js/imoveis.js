@@ -623,14 +623,6 @@ function criarCard(imovel){
             loading="lazy"
             onerror="this.src='https://placehold.co/900x650?text=Sem+Imagem'">
 
-        ${
-            finalidade
-            ?
-            `<span class="badge-finalidade">${finalidade}</span>`
-            :
-            ""
-        }
-
     </div>
 
     <div class="conteudo-imovel">
