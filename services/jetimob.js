@@ -169,9 +169,15 @@ async function buscarImovel(codigo) {
 
     const imovel = resposta.data.data || resposta.data;
 
-    console.log("===== RESPOSTA COMPLETA DA JETIMOB =====");
-console.dir(resposta.data, { depth: null });
-console.log("========================================");
+    console.log("CHAVES DO OBJETO:");
+console.log(Object.keys(imovel));
+
+console.log("CAMPOS COM 'desc':");
+Object.keys(imovel).forEach((k) => {
+    if (k.toLowerCase().includes("desc")) {
+        console.log(k, "=", imovel[k]);
+    }
+});
 
     return {
         codigo: imovel.codigo,
