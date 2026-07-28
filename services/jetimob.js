@@ -163,9 +163,39 @@ Object.entries(primeiro).forEach(([chave, valor]) => {
 
 async function buscarImovel(codigo) {
 
-    const imoveis = await listarImoveis();
+    const resposta = await api.get(`/imoveis/codigo/${codigo}?v=6`);
 
-    return imoveis.find(i => i.codigo == codigo);
+    const imovel = resposta.data.data || resposta.data;
+
+    return {
+        codigo: imovel.codigo,
+        titulo: imovel.titulo_anuncio,
+        descricao:
+            imovel.descricao ||
+            imovel.descricao_anuncio ||
+            imovel.meta_description ||
+            "",
+        cidade: imovel.endereco_cidade,
+        bairro: imovel.endereco_bairro,
+        endereco: imovel.endereco || "",
+        valor: imovel.valor_venda,
+        valorLocacao: imovel.valor_locacao,
+        dormitorios: imovel.dormitorios,
+        suites: imovel.suites,
+        banheiros: imovel.banheiros,
+        vagas: imovel.vagas,
+        area: imovel.area_privativa,
+        areaTotal: imovel.area_total,
+        tipo: imovel.tipo,
+        condominio: imovel.valor_condominio,
+        iptu: imovel.valor_iptu,
+        caracteristicas: imovel.caracteristicas || [],
+        latitude: imovel.latitude,
+        longitude: imovel.longitude,
+        link: imovel.link,
+        imagem: imovel.imagens?.length ? imovel.imagens[0].link : "",
+        imagens: imovel.imagens?.map(img => img.link) || []
+    };
 
 }
 
